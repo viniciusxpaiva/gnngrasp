@@ -1,0 +1,98 @@
+======================================================================
+[✓] GRID SUMMARY (top-10 by Macro F1):
+======================================================================
+GCN | L=2 | K=2 | bAcc=85.10±0.52 | F1=86.02±0.38 | 176.14s/run
+GCN | L=2 | K=3 | bAcc=84.42±0.58 | F1=85.73±0.51 | 215.58s/run
+GCN | L=2 | K=4 | bAcc=84.49±0.65 | F1=85.62±0.60 | 384.54s/run
+GCN | L=2 | K=5 | bAcc=84.44±0.43 | F1=85.53±0.35 | 486.99s/run
+GCN | L=3 | K=3 | bAcc=83.97±0.42 | F1=84.94±0.36 | 130.27s/run
+GCN | L=3 | K=2 | bAcc=83.70±0.52 | F1=84.85±0.57 | 71.39s/run
+GCN | L=2 | K=4 | bAcc=83.51±0.28 | F1=84.43±0.29 | 296.27s/run
+GCN | L=4 | K=2 | bAcc=83.57±0.49 | F1=84.42±0.41 | 145.78s/run
+GCN | L=3 | K=5 | bAcc=83.39±0.37 | F1=84.30±0.36 | 758.22s/run
+GCN | L=4 | K=3 | bAcc=83.13±0.54 | F1=84.12±0.49 | 188.68s/run
+
+Test 1
+[✓] cora_anchor_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 2
+ - Balanced Accuracy : 85.10 ± 0.52
+ - Macro F1          : 86.02 ± 0.38
+[⏱️] Average time per run: 176.14 sec | Total: 1761.42 sec
+
+Test 2
+[✓] cora_anchor_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 3
+ - Balanced Accuracy : 84.42 ± 0.58
+ - Macro F1          : 85.73 ± 0.51
+[⏱️] Average time per run: 215.58 sec | Total: 2155.75 sec
+
+Test 3
+[✓] cora_anchor_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 4
+ - Balanced Accuracy : 84.49 ± 0.65
+ - Macro F1          : 85.62 ± 0.60
+[⏱️] Average time per run: 384.54 sec | Total: 3845.36 sec
+
+Test 4
+[✓] cora_anchor_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 5
+ - Balanced Accuracy : 84.44 ± 0.43
+ - Macro F1          : 85.53 ± 0.35
+[⏱️] Average time per run: 486.99 sec | Total: 4869.86 sec
+
+Test 5
+[✓] cora_anchor_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 3 | SG neighbors: 2
+ - Balanced Accuracy : 83.70 ± 0.52
+ - Macro F1          : 84.85 ± 0.57
+[⏱️] Average time per run: 71.39 sec | Total: 713.92 sec
+
+Test 6
+[✓] cora_anchor_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 3 | SG neighbors: 3
+ - Balanced Accuracy : 83.97 ± 0.42
+ - Macro F1          : 84.94 ± 0.36
+[⏱️] Average time per run: 130.27 sec | Total: 1302.67 sec
+
+Test 7
+[✓] cora_anchor_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 3 | SG neighbors: 4
+ - Balanced Accuracy : 83.51 ± 0.28
+ - Macro F1          : 84.43 ± 0.29
+[⏱️] Average time per run: 296.27 sec | Total: 2962.67 sec
+
+Test 8
+[✓] cora_anchor_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 3 | SG neighbors: 5
+ - Balanced Accuracy : 83.39 ± 0.37
+ - Macro F1          : 84.30 ± 0.36
+[⏱️] Average time per run: 758.22 sec | Total: 7582.18 sec
+
+Test 9
+[✓] cora_anchor_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 4 | SG neighbors: 2
+ - Balanced Accuracy : 83.57 ± 0.49
+ - Macro F1          : 84.42 ± 0.41
+[⏱️] Average time per run: 145.78 sec | Total: 1457.84 sec
+
+Test 10
+[✓] cora_anchor_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 4 | SG neighbors: 3
+ - Balanced Accuracy : 83.13 ± 0.54
+ - Macro F1          : 84.12 ± 0.49
+[⏱️] Average time per run: 188.68 sec | Total: 1886.84 sec
+
+Test 11
+[✓] cora_anchor_subF_gcn | 10 runs
+GNN type: gcn | Layers: 4 | SG neighbors: 4
+ - Balanced Accuracy : 82.95 ± 0.38
+ - Macro F1          : 83.87 ± 0.31
+[⏱️] Average time per run: 567.76 sec | Total: 5677.64 sec
+
+Test 12
+[✓] cora_anchor_subF_gcn | 10 runs
+GNN type: gcn | Layers: 4 | SG neighbors: 5
+ - Balanced Accuracy : 83.00 ± 0.59
+ - Macro F1          : 83.82 ± 0.49
+[⏱️] Average time per run: 1215.05 sec | Total: 12150.51 sec
+

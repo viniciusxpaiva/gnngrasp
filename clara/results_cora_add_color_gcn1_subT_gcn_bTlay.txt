@@ -1,0 +1,38 @@
+New subgraph old node
+
+Test 1
+[✓] cora_add_color_gcn1_subT_gcn_bTlay | 10 runs
+GNN1 type: GCN | Layers: 1 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001
+GNN2 type: gcn | Layers: 2 | SG neighbors: 5 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 84.20 ± 0.94
+ - Macro F1          : 85.01 ± 0.70
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 85.40 ±  2.31
+   bacc    : 80.84 ±  3.20
+   prec    : 85.82 ±  2.76
+   rec     : 93.79 ±  1.91
+   f1      : 89.21 ±  1.63
+   mcc     :  0.6540 ±  0.0509
+   roc_auc :  0.9250 ±  0.0150
+   pr_auc  :  0.9627 ±  0.0128
+[⏱️] Average time per run: 82.10 sec | Total: 821.00 sec
+
+New subgraph new node
+
+Test 1
+[✓] cora_add_color_gcn1_subT_gcn_bTlay | 10 runs
+GNN1 type: GCN | Layers: 1 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001
+GNN2 type: gcn | Layers: 2 | SG neighbors: 5 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 83.26 ± 3.45
+ - Macro F1          : 82.27 ± 4.34
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 86.05 ±  1.66
+   bacc    : 80.00 ±  2.70
+   prec    : 86.25 ±  2.47
+   rec     : 94.67 ±  1.67
+   f1      : 90.01 ±  1.28
+   mcc     :  0.6414 ±  0.0424
+   roc_auc :  0.9271 ±  0.0068
+   pr_auc  :  0.9662 ±  0.0063
+[⏱️] Average time per run: 341.38 sec | Total: 3413.81 sec
+

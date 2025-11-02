@@ -1,0 +1,161 @@
+======================================================================
+[✓] GRID SUMMARY (top-10 by Macro F1):
+======================================================================
+GAT  | L=2 | K=2 | bAcc=87.23±0.51 | F1=85.11±0.41 | 23.62s/run
+GAT  | L=1 | K=3 | bAcc=86.14±0.66 | F1=84.99±0.61 | 20.81s/run
+GAT  | L=1 | K=2 | bAcc=85.26±0.83 | F1=84.90±0.87 | 18.76s/run
+GAT  | L=3 | K=5 | bAcc=87.88±0.74 | F1=84.77±1.46 | 30.50s/run
+GAT  | L=2 | K=3 | bAcc=87.79±0.58 | F1=84.61±0.56 | 27.04s/run
+GAT  | L=3 | K=2 | bAcc=86.62±0.48 | F1=84.20±0.63 | 32.81s/run
+GAT  | L=3 | K=3 | bAcc=86.83±0.44 | F1=84.13±0.35 | 33.00s/run
+GAT  | L=1 | K=5 | bAcc=85.27±2.42 | F1=84.11±2.20 | 29.27s/run
+GAT  | L=2 | K=4 | bAcc=88.32±0.84 | F1=84.10±1.63 | 25.28s/run
+GAT  | L=3 | K=4 | bAcc=87.24±0.53 | F1=84.05±1.83 | 22.39s/run
+
+Test 1
+[✓] cora_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 1 | SG neighbors: 2
+ - Balanced Accuracy : 85.26 ± 0.83
+ - Macro F1          : 84.90 ± 0.87
+[⏱️] Average time per run: 18.76 sec | Total: 187.56 sec
+
+Test 2
+[✓] cora_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 1 | SG neighbors: 3
+ - Balanced Accuracy : 86.14 ± 0.66
+ - Macro F1          : 84.99 ± 0.61
+[⏱️] Average time per run: 20.81 sec | Total: 208.06 sec
+
+Test 3
+[✓] cora_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 1 | SG neighbors: 4
+ - Balanced Accuracy : 85.67 ± 0.46
+ - Macro F1          : 83.59 ± 1.42
+[⏱️] Average time per run: 21.48 sec | Total: 214.79 sec
+
+Test 4
+[✓] cora_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 1 | SG neighbors: 5
+ - Balanced Accuracy : 85.27 ± 2.42
+ - Macro F1          : 84.11 ± 2.20
+[⏱️] Average time per run: 29.27 sec | Total: 292.68 sec
+
+Test 5
+[✓] cora_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 1 | SG neighbors: 6
+ - Balanced Accuracy : 81.75 ± 1.31
+ - Macro F1          : 81.23 ± 1.40
+[⏱️] Average time per run: 22.33 sec | Total: 223.30 sec
+
+Test 6
+[✓] cora_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 2 | SG neighbors: 2
+ - Balanced Accuracy : 87.23 ± 0.51
+ - Macro F1          : 85.11 ± 0.41
+[⏱️] Average time per run: 23.62 sec | Total: 236.21 sec
+
+Test 7
+[✓] cora_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 2 | SG neighbors: 3
+ - Balanced Accuracy : 87.79 ± 0.58
+ - Macro F1          : 84.61 ± 0.56
+[⏱️] Average time per run: 27.04 sec | Total: 270.42 sec
+
+Test 8
+[✓] cora_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 2 | SG neighbors: 4
+ - Balanced Accuracy : 88.32 ± 0.84
+ - Macro F1          : 84.10 ± 1.63
+[⏱️] Average time per run: 25.28 sec | Total: 252.80 sec
+
+Test 9
+[✓] cora_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 2 | SG neighbors: 5
+ - Balanced Accuracy : 85.00 ± 8.80
+ - Macro F1          : 80.56 ± 9.22
+[⏱️] Average time per run: 24.77 sec | Total: 247.66 sec
+
+Test 10
+[✓] cora_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 2 | SG neighbors: 6
+ - Balanced Accuracy : 58.71 ± 2.52
+ - Macro F1          : 52.67 ± 3.79
+[⏱️] Average time per run: 26.24 sec | Total: 262.41 sec
+
+Test 11
+[✓] cora_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 3 | SG neighbors: 2
+ - Balanced Accuracy : 86.62 ± 0.48
+ - Macro F1          : 84.20 ± 0.63
+[⏱️] Average time per run: 32.81 sec | Total: 328.06 sec
+
+Test 12
+[✓] cora_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 3 | SG neighbors: 3
+ - Balanced Accuracy : 86.83 ± 0.44
+ - Macro F1          : 84.13 ± 0.35
+[⏱️] Average time per run: 33.00 sec | Total: 329.99 sec
+
+Test 13
+[✓] cora_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 3 | SG neighbors: 4
+ - Balanced Accuracy : 87.24 ± 0.53
+ - Macro F1          : 84.05 ± 1.83
+[⏱️] Average time per run: 22.39 sec | Total: 223.94 sec
+
+Test 14
+[✓] cora_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 3 | SG neighbors: 5
+ - Balanced Accuracy : 87.88 ± 0.74
+ - Macro F1          : 84.77 ± 1.46
+[⏱️] Average time per run: 30.50 sec | Total: 304.96 sec
+
+Test 15
+[✓] cora_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 3 | SG neighbors: 6
+ - Balanced Accuracy : 61.34 ± 4.46
+ - Macro F1          : 57.90 ± 6.66
+[⏱️] Average time per run: 30.68 sec | Total: 306.84 sec
+
+Test 16
+[✓] cora_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 4 | SG neighbors: 2
+ - Balanced Accuracy : 86.13 ± 0.82
+ - Macro F1          : 83.40 ± 0.72
+[⏱️] Average time per run: 42.15 sec | Total: 421.54 sec
+
+Test 17
+[✓] cora_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 4 | SG neighbors: 3
+ - Balanced Accuracy : 86.93 ± 0.87
+ - Macro F1          : 83.36 ± 0.78
+[⏱️] Average time per run: 23.51 sec | Total: 235.12 sec
+
+Test 18
+[✓] cora_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 4 | SG neighbors: 4
+ - Balanced Accuracy : 87.33 ± 0.92
+ - Macro F1          : 83.85 ± 1.57
+[⏱️] Average time per run: 20.99 sec | Total: 209.93 sec
+
+Test 19
+[✓] cora_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 4 | SG neighbors: 5
+ - Balanced Accuracy : 82.74 ± 10.68
+ - Macro F1          : 79.42 ± 10.44
+[⏱️] Average time per run: 23.48 sec | Total: 234.78 sec
+
+Test 20
+[✓] cora_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 4 | SG neighbors: 6
+ - Balanced Accuracy : 58.27 ± 2.58
+ - Macro F1          : 54.00 ± 3.64
+[⏱️] Average time per run: 26.18 sec | Total: 261.84 sec
+
+Test 1
+[✓] cora_coloring_subFall_gat | 1 runs
+GNN type: gat | Layers: 1 | SG neighbors: 3
+ - Balanced Accuracy : 86.66 ± 0.00
+ - Macro F1          : 85.40 ± 0.00
+[⏱️] Average time per run: 13.06 sec | Total: 13.06 sec
+

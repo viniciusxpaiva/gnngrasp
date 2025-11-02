@@ -1,0 +1,154 @@
+======================================================================
+[✓] GRID SUMMARY (top-10 by Macro F1):
+======================================================================
+GCN  | L=1 | K=3 | bAcc=72.24±0.96 | F1=71.58±1.19 | 48.65s/run
+GCN  | L=2 | K=5 | bAcc=71.90±1.36 | F1=71.18±1.61 | 36.90s/run
+GCN  | L=1 | K=5 | bAcc=71.59±0.51 | F1=70.76±0.62 | 44.37s/run
+GCN  | L=1 | K=4 | bAcc=71.46±0.41 | F1=70.60±0.50 | 33.46s/run
+GCN  | L=2 | K=4 | bAcc=70.91±0.37 | F1=69.83±0.43 | 24.48s/run
+GCN  | L=3 | K=6 | bAcc=69.58±0.89 | F1=68.29±1.03 | 42.96s/run
+GCN  | L=2 | K=3 | bAcc=69.69±0.69 | F1=68.26±0.75 | 23.83s/run
+GCN  | L=3 | K=5 | bAcc=69.60±1.21 | F1=68.19±1.42 | 36.67s/run
+GCN  | L=4 | K=6 | bAcc=69.32±2.42 | F1=67.94±2.88 | 49.36s/run
+GCN  | L=1 | K=2 | bAcc=69.32±0.35 | F1=67.82±0.43 | 40.12s/run
+
+Test 1
+[✓] pubmed_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 1 | SG neighbors: 2
+ - Balanced Accuracy : 69.32 ± 0.35
+ - Macro F1          : 67.82 ± 0.43
+[⏱️] Average time per run: 40.12 sec | Total: 401.16 sec
+
+Test 2
+[✓] pubmed_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 1 | SG neighbors: 3
+ - Balanced Accuracy : 72.24 ± 0.96
+ - Macro F1          : 71.58 ± 1.19
+[⏱️] Average time per run: 48.65 sec | Total: 486.46 sec
+
+Test 3
+[✓] pubmed_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 1 | SG neighbors: 4
+ - Balanced Accuracy : 71.46 ± 0.41
+ - Macro F1          : 70.60 ± 0.50
+[⏱️] Average time per run: 33.46 sec | Total: 334.61 sec
+
+Test 4
+[✓] pubmed_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 1 | SG neighbors: 5
+ - Balanced Accuracy : 71.59 ± 0.51
+ - Macro F1          : 70.76 ± 0.62
+[⏱️] Average time per run: 44.37 sec | Total: 443.73 sec
+
+Test 5
+[✓] pubmed_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 1 | SG neighbors: 6
+ - Balanced Accuracy : 57.70 ± 2.06
+ - Macro F1          : 50.93 ± 3.36
+[⏱️] Average time per run: 27.33 sec | Total: 273.25 sec
+
+Test 6
+[✓] pubmed_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 2
+ - Balanced Accuracy : 68.95 ± 0.31
+ - Macro F1          : 67.44 ± 0.43
+[⏱️] Average time per run: 27.49 sec | Total: 274.93 sec
+
+Test 7
+[✓] pubmed_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 3
+ - Balanced Accuracy : 69.69 ± 0.69
+ - Macro F1          : 68.26 ± 0.75
+[⏱️] Average time per run: 23.83 sec | Total: 238.31 sec
+
+Test 8
+[✓] pubmed_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 4
+ - Balanced Accuracy : 70.91 ± 0.37
+ - Macro F1          : 69.83 ± 0.43
+[⏱️] Average time per run: 24.48 sec | Total: 244.84 sec
+
+Test 9
+[✓] pubmed_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 5
+ - Balanced Accuracy : 71.90 ± 1.36
+ - Macro F1          : 71.18 ± 1.61
+[⏱️] Average time per run: 36.90 sec | Total: 369.01 sec
+
+Test 10
+[✓] pubmed_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 6
+ - Balanced Accuracy : 69.13 ± 1.05
+ - Macro F1          : 67.53 ± 1.44
+[⏱️] Average time per run: 39.61 sec | Total: 396.13 sec
+
+Test 11
+[✓] pubmed_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 3 | SG neighbors: 2
+ - Balanced Accuracy : 68.29 ± 1.41
+ - Macro F1          : 66.64 ± 1.88
+[⏱️] Average time per run: 46.53 sec | Total: 465.27 sec
+
+Test 12
+[✓] pubmed_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 3 | SG neighbors: 3
+ - Balanced Accuracy : 68.80 ± 0.81
+ - Macro F1          : 67.30 ± 1.10
+[⏱️] Average time per run: 31.88 sec | Total: 318.84 sec
+
+Test 13
+[✓] pubmed_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 3 | SG neighbors: 4
+ - Balanced Accuracy : 68.93 ± 0.66
+ - Macro F1          : 67.30 ± 0.87
+[⏱️] Average time per run: 28.23 sec | Total: 282.29 sec
+
+Test 14
+[✓] pubmed_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 3 | SG neighbors: 5
+ - Balanced Accuracy : 69.60 ± 1.21
+ - Macro F1          : 68.19 ± 1.42
+[⏱️] Average time per run: 36.67 sec | Total: 366.74 sec
+
+Test 15
+[✓] pubmed_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 3 | SG neighbors: 6
+ - Balanced Accuracy : 69.58 ± 0.89
+ - Macro F1          : 68.29 ± 1.03
+[⏱️] Average time per run: 42.96 sec | Total: 429.58 sec
+
+Test 16
+[✓] pubmed_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 4 | SG neighbors: 2
+ - Balanced Accuracy : 68.08 ± 0.70
+ - Macro F1          : 66.60 ± 0.94
+[⏱️] Average time per run: 43.17 sec | Total: 431.69 sec
+
+Test 17
+[✓] pubmed_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 4 | SG neighbors: 3
+ - Balanced Accuracy : 68.02 ± 0.40
+ - Macro F1          : 66.45 ± 0.55
+[⏱️] Average time per run: 35.54 sec | Total: 355.39 sec
+
+Test 18
+[✓] pubmed_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 4 | SG neighbors: 4
+ - Balanced Accuracy : 68.47 ± 1.10
+ - Macro F1          : 66.80 ± 1.40
+[⏱️] Average time per run: 31.40 sec | Total: 313.99 sec
+
+Test 19
+[✓] pubmed_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 4 | SG neighbors: 5
+ - Balanced Accuracy : 67.97 ± 0.87
+ - Macro F1          : 66.27 ± 1.16
+[⏱️] Average time per run: 39.09 sec | Total: 390.90 sec
+
+Test 20
+[✓] pubmed_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 4 | SG neighbors: 6
+ - Balanced Accuracy : 69.32 ± 2.42
+ - Macro F1          : 67.94 ± 2.88
+[⏱️] Average time per run: 49.36 sec | Total: 493.64 sec
+

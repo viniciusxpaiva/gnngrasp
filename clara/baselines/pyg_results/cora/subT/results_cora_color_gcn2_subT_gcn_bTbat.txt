@@ -1,0 +1,126 @@
+======================================================================
+[✓] GRID SUMMARY (top-10 by Macro F1):
+======================================================================
+GCN | L=3 | K=5 | bAcc=86.63±0.61 | F1=84.68±0.75 | 51.61s/run
+GCN | L=2 | K=3 | bAcc=85.35±1.00 | F1=84.10±0.85 | 85.30s/run
+GCN | L=2 | K=2 | bAcc=84.10±0.59 | F1=83.25±0.87 | 130.86s/run
+GCN | L=3 | K=3 | bAcc=85.49±0.70 | F1=83.36±0.97 | 58.25s/run
+GCN | L=3 | K=2 | bAcc=83.94±0.62 | F1=82.96±0.64 | 99.95s/run
+GCN | L=3 | K=4 | bAcc=86.20±0.62 | F1=82.44±1.29 | 43.42s/run
+GCN | L=4 | K=5 | bAcc=83.09±1.58 | F1=82.04±1.13 | 147.06s/run
+GCN | L=4 | K=2 | bAcc=83.82±0.78 | F1=82.20±0.84 | 91.87s/run
+GCN | L=1 | K=2 | bAcc=81.71±0.85 | F1=81.36±0.83 | 120.48s/run
+GCN | L=1 | K=3 | bAcc=81.87±0.86 | F1=80.98±1.04 | 95.81s/run
+
+Test 1
+[✓] cora_color_subT_gcn_bTbat | 10 runs
+GNN type: gcn | Layers: 1 | SG neighbors: 2 | bias_mode=concat | context_norm=batch_zscore
+ - Balanced Accuracy : 81.71 ± 0.85
+ - Macro F1          : 81.36 ± 0.83
+[⏱️] Average time per run: 120.48 sec | Total: 1204.82 sec
+
+Test 2
+[✓] cora_color_subT_gcn_bTbat | 10 runs
+GNN type: gcn | Layers: 1 | SG neighbors: 3 | bias_mode=concat | context_norm=batch_zscore
+ - Balanced Accuracy : 81.87 ± 0.86
+ - Macro F1          : 80.98 ± 1.04
+[⏱️] Average time per run: 95.81 sec | Total: 958.10 sec
+
+Test 3
+[✓] cora_color_subT_gcn_bTbat | 10 runs
+GNN type: gcn | Layers: 1 | SG neighbors: 4 | bias_mode=concat | context_norm=batch_zscore
+ - Balanced Accuracy : 80.87 ± 1.34
+ - Macro F1          : 76.87 ± 2.61
+[⏱️] Average time per run: 68.84 sec | Total: 688.41 sec
+
+Test 4
+[✓] cora_color_subT_gcn_bTbat | 10 runs
+GNN type: gcn | Layers: 1 | SG neighbors: 5 | bias_mode=concat | context_norm=batch_zscore
+ - Balanced Accuracy : 74.66 ± 7.96
+ - Macro F1          : 72.77 ± 9.90
+[⏱️] Average time per run: 64.01 sec | Total: 640.12 sec
+
+Test 5
+[✓] cora_color_subT_gcn_bTbat | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 2 | bias_mode=concat | context_norm=batch_zscore
+ - Balanced Accuracy : 84.10 ± 0.59
+ - Macro F1          : 83.25 ± 0.87
+[⏱️] Average time per run: 130.86 sec | Total: 1308.57 sec
+
+Test 6
+[✓] cora_color_subT_gcn_bTbat | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 3 | bias_mode=concat | context_norm=batch_zscore
+ - Balanced Accuracy : 85.35 ± 1.00
+ - Macro F1          : 84.10 ± 0.85
+[⏱️] Average time per run: 85.30 sec | Total: 853.03 sec
+
+Test 7
+[✓] cora_color_subT_gcn_bTbat | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 4 | bias_mode=concat | context_norm=batch_zscore
+ - Balanced Accuracy : 85.05 ± 1.33
+ - Macro F1          : 80.74 ± 1.99
+[⏱️] Average time per run: 63.61 sec | Total: 636.07 sec
+
+Test 8
+[✓] cora_color_subT_gcn_bTbat | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 5 | bias_mode=concat | context_norm=batch_zscore
+ - Balanced Accuracy : 82.58 ± 9.02
+ - Macro F1          : 80.23 ± 10.69
+[⏱️] Average time per run: 67.18 sec | Total: 671.85 sec
+
+Test 9
+[✓] cora_color_subT_gcn_bTbat | 10 runs
+GNN type: gcn | Layers: 3 | SG neighbors: 2 | bias_mode=concat | context_norm=batch_zscore
+ - Balanced Accuracy : 83.94 ± 0.62
+ - Macro F1          : 82.96 ± 0.64
+[⏱️] Average time per run: 99.95 sec | Total: 999.51 sec
+
+Test 10
+[✓] cora_color_subT_gcn_bTbat | 10 runs
+GNN type: gcn | Layers: 3 | SG neighbors: 3 | bias_mode=concat | context_norm=batch_zscore
+ - Balanced Accuracy : 85.49 ± 0.70
+ - Macro F1          : 83.36 ± 0.97
+[⏱️] Average time per run: 58.25 sec | Total: 582.50 sec
+
+Test 11
+[✓] cora_color_subT_gcn_bTbat | 10 runs
+GNN type: gcn | Layers: 3 | SG neighbors: 4 | bias_mode=concat | context_norm=batch_zscore
+ - Balanced Accuracy : 86.20 ± 0.62
+ - Macro F1          : 82.44 ± 1.29
+[⏱️] Average time per run: 43.42 sec | Total: 434.24 sec
+
+Test 12
+[✓] cora_color_subT_gcn_bTbat | 10 runs
+GNN type: gcn | Layers: 3 | SG neighbors: 5 | bias_mode=concat | context_norm=batch_zscore
+ - Balanced Accuracy : 86.63 ± 0.61
+ - Macro F1          : 84.68 ± 0.75
+[⏱️] Average time per run: 51.61 sec | Total: 516.10 sec
+
+Test 13
+[✓] cora_color_subT_gcn_bTbat | 10 runs
+GNN type: gcn | Layers: 4 | SG neighbors: 2 | bias_mode=concat | context_norm=batch_zscore
+ - Balanced Accuracy : 83.82 ± 0.78
+ - Macro F1          : 82.20 ± 0.84
+[⏱️] Average time per run: 91.87 sec | Total: 918.75 sec
+
+Test 14
+[✓] cora_color_subT_gcn_bTbat | 10 runs
+GNN type: gcn | Layers: 4 | SG neighbors: 3 | bias_mode=concat | context_norm=batch_zscore
+ - Balanced Accuracy : 81.50 ± 0.93
+ - Macro F1          : 80.26 ± 0.97
+[⏱️] Average time per run: 129.51 sec | Total: 1295.07 sec
+
+Test 15
+[✓] cora_color_subT_gcn_bTbat | 10 runs
+GNN type: gcn | Layers: 4 | SG neighbors: 4 | bias_mode=concat | context_norm=batch_zscore
+ - Balanced Accuracy : 83.13 ± 1.57
+ - Macro F1          : 80.74 ± 0.51
+[⏱️] Average time per run: 163.67 sec | Total: 1636.73 sec
+
+Test 16
+[✓] cora_color_subT_gcn_bTbat | 10 runs
+GNN type: gcn | Layers: 4 | SG neighbors: 5 | bias_mode=concat | context_norm=batch_zscore
+ - Balanced Accuracy : 83.09 ± 1.58
+ - Macro F1          : 82.04 ± 1.13
+[⏱️] Average time per run: 147.06 sec | Total: 1470.60 sec
+

@@ -1,0 +1,119 @@
+======================================================================
+[✓] GRID SUMMARY (top-10 by Macro F1):
+======================================================================
+GCN | L=2 | K=5 | bAcc=85.49±0.57 | F1=85.86±0.43 | 126.52s/run
+GCN | L=2 | K=5 | bAcc=85.05±0.57 | F1=85.75±0.47 | 124.47s/run
+GCN | L=2 | K=4 | bAcc=85.22±0.77 | F1=85.44±0.41 | 127.71s/run
+GCN | L=2 | K=5 | bAcc=85.90±0.82 | F1=85.53±1.00 | 121.28s/run
+GCN | L=2 | K=5 | bAcc=85.30±1.34 | F1=85.50±1.14 | 122.29s/run
+GCN | L=2 | K=4 | bAcc=85.28±0.87 | F1=85.16±1.24 | 137.01s/run
+GCN | L=2 | K=4 | bAcc=85.04±1.01 | F1=85.12±0.89 | 122.19s/run
+GCN | L=2 | K=3 | bAcc=84.68±0.93 | F1=85.08±0.61 | 274.72s/run
+GCN | L=2 | K=3 | bAcc=84.38±0.80 | F1=85.02±0.78 | 279.63s/run
+GCN | L=2 | K=3 | bAcc=84.85±0.77 | F1=85.04±0.69 | 286.06s/run
+
+Test 1
+[✓] cora_color_gin2_subT_gcn_bTlay | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 3 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 84.68 ± 0.93
+ - Macro F1          : 85.08 ± 0.61
+[⏱️] Average time per run: 274.72 sec | Total: 2747.18 sec
+
+Test 1
+[✓] cora_color_gin2_subT_gcn_bTlay | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 3 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 84.54 ± 0.79
+ - Macro F1          : 84.86 ± 0.40
+[⏱️] Average time per run: 278.00 sec | Total: 2779.98 sec
+
+Test 1
+[✓] cora_color_gin2_subT_gcn_bTlay | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 3 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 84.38 ± 0.80
+ - Macro F1          : 85.02 ± 0.78
+[⏱️] Average time per run: 279.63 sec | Total: 2796.32 sec
+
+Test 1
+[✓] cora_color_gin2_subT_gcn_bTlay | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 3 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 84.50 ± 0.71
+ - Macro F1          : 84.97 ± 0.61
+[⏱️] Average time per run: 280.73 sec | Total: 2807.29 sec
+
+Test 1
+[✓] cora_color_gin2_subT_gcn_bTlay | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 3 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 84.85 ± 0.77
+ - Macro F1          : 85.04 ± 0.69
+[⏱️] Average time per run: 286.06 sec | Total: 2860.60 sec
+
+Test 2
+[✓] cora_color_gin2_subT_gcn_bTlay | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 4 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 84.69 ± 0.65
+ - Macro F1          : 85.38 ± 0.61
+[⏱️] Average time per run: 115.15 sec | Total: 1151.52 sec
+
+Test 2
+[✓] cora_color_gin2_subT_gcn_bTlay | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 4 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 85.22 ± 0.77
+ - Macro F1          : 85.44 ± 0.41
+[⏱️] Average time per run: 127.71 sec | Total: 1277.13 sec
+
+Test 2
+[✓] cora_color_gin2_subT_gcn_bTlay | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 4 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 85.04 ± 1.01
+ - Macro F1          : 85.12 ± 0.89
+[⏱️] Average time per run: 122.19 sec | Total: 1221.94 sec
+
+Test 2
+[✓] cora_color_gin2_subT_gcn_bTlay | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 4 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 84.50 ± 0.48
+ - Macro F1          : 84.79 ± 1.02
+[⏱️] Average time per run: 127.49 sec | Total: 1274.89 sec
+
+Test 2
+[✓] cora_color_gin2_subT_gcn_bTlay | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 4 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 85.28 ± 0.87
+ - Macro F1          : 85.16 ± 1.24
+[⏱️] Average time per run: 137.01 sec | Total: 1370.12 sec
+
+Test 3
+[✓] cora_color_gin2_subT_gcn_bTlay | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 5 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 85.90 ± 0.82
+ - Macro F1          : 85.53 ± 1.00
+[⏱️] Average time per run: 121.28 sec | Total: 1212.75 sec
+
+Test 3
+[✓] cora_color_gin2_subT_gcn_bTlay | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 5 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 85.30 ± 1.34
+ - Macro F1          : 85.50 ± 1.14
+[⏱️] Average time per run: 122.29 sec | Total: 1222.94 sec
+
+Test 3
+[✓] cora_color_gin2_subT_gcn_bTlay | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 5 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 84.89 ± 1.05
+ - Macro F1          : 85.29 ± 1.14
+[⏱️] Average time per run: 123.43 sec | Total: 1234.31 sec
+
+Test 3
+[✓] cora_color_gin2_subT_gcn_bTlay | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 5 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 85.49 ± 0.57
+ - Macro F1          : 85.86 ± 0.43
+[⏱️] Average time per run: 126.52 sec | Total: 1265.20 sec
+
+Test 3
+[✓] cora_color_gin2_subT_gcn_bTlay | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 5 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 85.05 ± 0.57
+ - Macro F1          : 85.75 ± 0.47
+[⏱️] Average time per run: 124.47 sec | Total: 1244.72 sec
+

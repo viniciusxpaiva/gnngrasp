@@ -1,0 +1,154 @@
+======================================================================
+[✓] GRID SUMMARY (top-10 by Macro F1):
+======================================================================
+GCN  | L=1 | K=3 | bAcc=70.69±0.61 | F1=68.47±0.90 | 21.17s/run
+GCN  | L=1 | K=2 | bAcc=70.16±0.72 | F1=67.90±1.04 | 22.18s/run
+GCN  | L=1 | K=6 | bAcc=70.88±0.87 | F1=67.79±0.97 | 23.85s/run
+GCN  | L=1 | K=4 | bAcc=70.50±0.60 | F1=67.74±0.71 | 22.18s/run
+GCN  | L=1 | K=5 | bAcc=69.61±0.88 | F1=66.95±1.06 | 23.84s/run
+GCN  | L=2 | K=2 | bAcc=68.59±0.87 | F1=66.81±1.02 | 33.40s/run
+GCN  | L=3 | K=2 | bAcc=67.79±1.09 | F1=65.90±1.00 | 35.21s/run
+GCN  | L=4 | K=2 | bAcc=67.87±0.79 | F1=65.70±0.87 | 40.26s/run
+GCN  | L=2 | K=3 | bAcc=67.15±0.99 | F1=65.46±1.11 | 27.06s/run
+GCN  | L=2 | K=4 | bAcc=66.82±0.59 | F1=64.73±0.81 | 24.93s/run
+
+Test 1
+[✓] citeseer_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 1 | SG neighbors: 2
+ - Balanced Accuracy : 70.16 ± 0.72
+ - Macro F1          : 67.90 ± 1.04
+[⏱️] Average time per run: 22.18 sec | Total: 221.81 sec
+
+Test 2
+[✓] citeseer_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 1 | SG neighbors: 3
+ - Balanced Accuracy : 70.69 ± 0.61
+ - Macro F1          : 68.47 ± 0.90
+[⏱️] Average time per run: 21.17 sec | Total: 211.66 sec
+
+Test 3
+[✓] citeseer_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 1 | SG neighbors: 4
+ - Balanced Accuracy : 70.50 ± 0.60
+ - Macro F1          : 67.74 ± 0.71
+[⏱️] Average time per run: 22.18 sec | Total: 221.79 sec
+
+Test 4
+[✓] citeseer_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 1 | SG neighbors: 5
+ - Balanced Accuracy : 69.61 ± 0.88
+ - Macro F1          : 66.95 ± 1.06
+[⏱️] Average time per run: 23.84 sec | Total: 238.37 sec
+
+Test 5
+[✓] citeseer_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 1 | SG neighbors: 6
+ - Balanced Accuracy : 70.88 ± 0.87
+ - Macro F1          : 67.79 ± 0.97
+[⏱️] Average time per run: 23.85 sec | Total: 238.47 sec
+
+Test 6
+[✓] citeseer_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 2
+ - Balanced Accuracy : 68.59 ± 0.87
+ - Macro F1          : 66.81 ± 1.02
+[⏱️] Average time per run: 33.40 sec | Total: 334.05 sec
+
+Test 7
+[✓] citeseer_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 3
+ - Balanced Accuracy : 67.15 ± 0.99
+ - Macro F1          : 65.46 ± 1.11
+[⏱️] Average time per run: 27.06 sec | Total: 270.56 sec
+
+Test 8
+[✓] citeseer_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 4
+ - Balanced Accuracy : 66.82 ± 0.59
+ - Macro F1          : 64.73 ± 0.81
+[⏱️] Average time per run: 24.93 sec | Total: 249.26 sec
+
+Test 9
+[✓] citeseer_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 5
+ - Balanced Accuracy : 67.06 ± 0.55
+ - Macro F1          : 64.69 ± 0.81
+[⏱️] Average time per run: 27.18 sec | Total: 271.82 sec
+
+Test 10
+[✓] citeseer_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 2 | SG neighbors: 6
+ - Balanced Accuracy : 67.10 ± 0.85
+ - Macro F1          : 64.47 ± 0.89
+[⏱️] Average time per run: 25.83 sec | Total: 258.35 sec
+
+Test 11
+[✓] citeseer_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 3 | SG neighbors: 2
+ - Balanced Accuracy : 67.79 ± 1.09
+ - Macro F1          : 65.90 ± 1.00
+[⏱️] Average time per run: 35.21 sec | Total: 352.07 sec
+
+Test 12
+[✓] citeseer_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 3 | SG neighbors: 3
+ - Balanced Accuracy : 65.70 ± 0.92
+ - Macro F1          : 63.60 ± 0.65
+[⏱️] Average time per run: 27.05 sec | Total: 270.48 sec
+
+Test 13
+[✓] citeseer_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 3 | SG neighbors: 4
+ - Balanced Accuracy : 65.49 ± 0.55
+ - Macro F1          : 63.14 ± 0.75
+[⏱️] Average time per run: 25.97 sec | Total: 259.69 sec
+
+Test 14
+[✓] citeseer_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 3 | SG neighbors: 5
+ - Balanced Accuracy : 65.92 ± 0.60
+ - Macro F1          : 63.21 ± 0.60
+[⏱️] Average time per run: 29.12 sec | Total: 291.19 sec
+
+Test 15
+[✓] citeseer_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 3 | SG neighbors: 6
+ - Balanced Accuracy : 65.66 ± 0.33
+ - Macro F1          : 62.70 ± 0.69
+[⏱️] Average time per run: 24.99 sec | Total: 249.92 sec
+
+Test 16
+[✓] citeseer_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 4 | SG neighbors: 2
+ - Balanced Accuracy : 67.87 ± 0.79
+ - Macro F1          : 65.70 ± 0.87
+[⏱️] Average time per run: 40.26 sec | Total: 402.59 sec
+
+Test 17
+[✓] citeseer_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 4 | SG neighbors: 3
+ - Balanced Accuracy : 65.52 ± 0.62
+ - Macro F1          : 63.37 ± 0.76
+[⏱️] Average time per run: 31.73 sec | Total: 317.27 sec
+
+Test 18
+[✓] citeseer_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 4 | SG neighbors: 4
+ - Balanced Accuracy : 64.25 ± 0.87
+ - Macro F1          : 61.65 ± 0.94
+[⏱️] Average time per run: 27.55 sec | Total: 275.54 sec
+
+Test 19
+[✓] citeseer_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 4 | SG neighbors: 5
+ - Balanced Accuracy : 65.60 ± 0.79
+ - Macro F1          : 62.63 ± 1.08
+[⏱️] Average time per run: 27.72 sec | Total: 277.23 sec
+
+Test 20
+[✓] citeseer_coloring_subFall_gcn | 10 runs
+GNN type: gcn | Layers: 4 | SG neighbors: 6
+ - Balanced Accuracy : 65.19 ± 0.67
+ - Macro F1          : 62.45 ± 0.63
+[⏱️] Average time per run: 21.16 sec | Total: 211.65 sec
+

@@ -1,0 +1,42 @@
+Test 1
+[✓] pubmed_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 1 | SG neighbors: 2
+ - Balanced Accuracy : 72.75 ± 0.65
+ - Macro F1          : 72.34 ± 0.86
+[⏱️] Average time per run: 48.84 sec | Total: 488.41 sec
+
+Test 2
+[✓] pubmed_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 1 | SG neighbors: 3
+ - Balanced Accuracy : 72.88 ± 0.45
+ - Macro F1          : 72.40 ± 0.57
+[⏱️] Average time per run: 48.07 sec | Total: 480.72 sec
+
+Test 3
+[✓] pubmed_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 1 | SG neighbors: 4
+ - Balanced Accuracy : 74.77 ± 0.72
+ - Macro F1          : 74.73 ± 0.81
+[⏱️] Average time per run: 60.04 sec | Total: 600.44 sec
+
+Test 4
+[✓] pubmed_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 1 | SG neighbors: 5
+ - Balanced Accuracy : 77.05 ± 1.23
+ - Macro F1          : 77.23 ± 1.20
+[⏱️] Average time per run: 86.27 sec | Total: 862.68 sec
+
+Test 1
+[✓] pubmed_coloring_subFall_gat | 1 runs
+GNN type: gat | Layers: 1 | SG neighbors: 3
+ - Balanced Accuracy : 75.49 ± 0.00
+ - Macro F1          : 75.54 ± 0.00
+[⏱️] Average time per run: 40.43 sec | Total: 40.43 sec
+
+Test 1
+[✓] pubmed_coloring_subFall_gat | 1 runs
+GNN type: gat | Layers: 1 | SG neighbors: 3
+ - Balanced Accuracy : 74.69 ± 0.00
+ - Macro F1          : 74.36 ± 0.00
+[⏱️] Average time per run: 40.82 sec | Total: 40.82 sec
+

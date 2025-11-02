@@ -1,0 +1,308 @@
+Test 1
+[✓] teste | 10 runs
+GNN1 type: GCN | Layers: 1 | add pooling | Dropout: 0.2 | Epochs: 60 | LR: 0.0001 | f_beta | 1 | 
+GNN2 type: GCN | Layers: 2 | SG neighbors: 5
+   --- Node (GNN2) metrics (means ± 95% CI) ---
+   bacc    : 86.58 [85.44, 87.73]
+   macro_f1: 86.39 [84.54, 88.24]
+   --- Node (GNN2) metrics (means ± std) ---
+   acc     : 93.59 ±  2.36
+   bacc    : 86.58 ±  1.52
+   prec    : 77.86 ±  3.51
+   rec     : 77.56 ±  1.76
+   f1      : 76.85 ±  2.89
+   macro_f1: 86.39 ±  2.45
+   mcc     :  0.7369 ±  0.0311
+   roc_auc :  0.9545 ±  0.0026
+   pr_auc  :  0.8272 ±  0.0080
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 84.88 ±  1.61
+   bacc    : 79.66 ±  2.67
+   prec    : 85.79 ±  2.52
+   rec     : 93.02 ±  1.82
+   f1      : 88.83 ±  1.08
+   mcc     :  0.6235 ±  0.0491
+   roc_auc :  0.9230 ±  0.0192
+   pr_auc  :  0.9698 ±  0.0057
+[⏱️] Average time per run: 231.51 sec | Total: 2315.11 sec
+
+Test 1
+[✓] teste | 1 runs
+GNN1 type: GCN | Layers: 1 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001 | f_beta | 1 | 
+GNN2 type: GCN | Layers: 2 | SG neighbors: 5
+   --- Node (GNN2) metrics (means ± 95% CI) ---
+   bacc    : 85.56 [85.56, 85.56]
+   macro_f1: 86.66 [86.66, 86.66]
+   --- Node (GNN2) metrics (means ± std) ---
+   acc     : 94.23 ±  0.00
+   bacc    : 85.56 ±  0.00
+   prec    : 80.48 ±  0.00
+   rec     : 74.37 ±  0.00
+   f1      : 76.79 ±  0.00
+   macro_f1: 86.66 ±  0.00
+   mcc     :  0.7372 ±  0.0000
+   roc_auc :  0.9494 ±  0.0000
+   pr_auc  :  0.8165 ±  0.0000
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 81.37 ±  0.00
+   bacc    : 72.01 ±  0.00
+   prec    : 80.66 ±  0.00
+   rec     : 94.57 ±  0.00
+   f1      : 86.96 ±  0.00
+   mcc     :  0.4777 ±  0.0000
+   roc_auc :  0.9018 ±  0.0000
+   pr_auc  :  0.9580 ±  0.0000
+[⏱️] Average time per run: 596.19 sec | Total: 596.19 sec
+
+Test 1
+[✓] teste | 1 runs
+GNN1 type: GCN | Layers: 1 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001 | f_beta | 1 | 
+GNN2 type: GCN | Layers: 2 | SG neighbors: 5
+   --- Node (GNN2) metrics (means ± 95% CI) ---
+   bacc    : 86.15 [86.15, 86.15]
+   macro_f1: 87.22 [87.22, 87.22]
+   --- Node (GNN2) metrics (means ± std) ---
+   acc     : 94.47 ±  0.00
+   bacc    : 86.15 ±  0.00
+   prec    : 81.32 ±  0.00
+   rec     : 74.90 ±  0.00
+   f1      : 77.71 ±  0.00
+   macro_f1: 87.22 ±  0.00
+   mcc     :  0.7474 ±  0.0000
+   roc_auc :  0.9522 ±  0.0000
+   pr_auc  :  0.8333 ±  0.0000
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 83.54 ±  0.00
+   bacc    : 76.25 ±  0.00
+   prec    : 85.10 ±  0.00
+   rec     : 90.80 ±  0.00
+   f1      : 87.54 ±  0.00
+   mcc     :  0.5463 ±  0.0000
+   roc_auc :  0.8942 ±  0.0000
+   pr_auc  :  0.9545 ±  0.0000
+[⏱️] Average time per run: 632.24 sec | Total: 632.24 sec
+
+Test 1
+[✓] teste | 1 runs
+GNN1 type: GCN | Layers: 1 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001 | f_beta | 1 | 
+GNN2 type: GCN | Layers: 2 | SG neighbors: 5
+   --- Node (GNN2) metrics (means ± 95% CI) ---
+   bacc    : 88.14 [88.14, 88.14]
+   macro_f1: 88.21 [88.21, 88.21]
+   --- Node (GNN2) metrics (means ± std) ---
+   acc     : 94.82 ±  0.00
+   bacc    : 88.14 ±  0.00
+   prec    : 80.36 ±  0.00
+   rec     : 79.34 ±  0.00
+   f1      : 79.52 ±  0.00
+   macro_f1: 88.21 ±  0.00
+   mcc     :  0.7664 ±  0.0000
+   roc_auc :  0.9547 ±  0.0000
+   pr_auc  :  0.8369 ±  0.0000
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 82.92 ±  0.00
+   bacc    : 76.57 ±  0.00
+   prec    : 83.25 ±  0.00
+   rec     : 93.61 ±  0.00
+   f1      : 87.53 ±  0.00
+   mcc     :  0.5515 ±  0.0000
+   roc_auc :  0.8265 ±  0.0000
+   pr_auc  :  0.9228 ±  0.0000
+[⏱️] Average time per run: 636.75 sec | Total: 636.75 sec
+
+Test 1
+[✓] teste | 1 runs
+GNN1 type: GCN | Layers: 1 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001 | f_beta | 1 | 
+GNN2 type: GCN | Layers: 2 | SG neighbors: 5
+   --- Node (GNN2) metrics (means ± 95% CI) ---
+   bacc    : 86.39 [86.39, 86.39]
+   macro_f1: 87.10 [87.10, 87.10]
+   --- Node (GNN2) metrics (means ± std) ---
+   acc     : 94.57 ±  0.00
+   bacc    : 86.39 ±  0.00
+   prec    : 80.57 ±  0.00
+   rec     : 75.77 ±  0.00
+   f1      : 77.45 ±  0.00
+   macro_f1: 87.10 ±  0.00
+   mcc     :  0.7465 ±  0.0000
+   roc_auc :  0.9502 ±  0.0000
+   pr_auc  :  0.8157 ±  0.0000
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 83.23 ±  0.00
+   bacc    : 76.99 ±  0.00
+   prec    : 83.39 ±  0.00
+   rec     : 94.02 ±  0.00
+   f1      : 87.79 ±  0.00
+   mcc     :  0.6025 ±  0.0000
+   roc_auc :  0.9288 ±  0.0000
+   pr_auc  :  0.9686 ±  0.0000
+[⏱️] Average time per run: 635.78 sec | Total: 635.78 sec
+
+Test 1
+[✓] teste | 1 runs
+GNN1 type: GCN | Layers: 1 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001 | f_beta | 1 | 
+GNN2 type: GCN | Layers: 2 | SG neighbors: 5
+   --- Node (GNN2) metrics (means ± 95% CI) ---
+   bacc    : 85.48 [85.48, 85.48]
+   macro_f1: 86.17 [86.17, 86.17]
+   --- Node (GNN2) metrics (means ± std) ---
+   acc     : 94.00 ±  0.00
+   bacc    : 85.48 ±  0.00
+   prec    : 78.68 ±  0.00
+   rec     : 74.32 ±  0.00
+   f1      : 75.95 ±  0.00
+   macro_f1: 86.17 ±  0.00
+   mcc     :  0.7269 ±  0.0000
+   roc_auc :  0.9589 ±  0.0000
+   pr_auc  :  0.8454 ±  0.0000
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 84.16 ±  0.00
+   bacc    : 78.20 ±  0.00
+   prec    : 85.32 ±  0.00
+   rec     : 92.72 ±  0.00
+   f1      : 88.25 ±  0.00
+   mcc     :  0.5757 ±  0.0000
+   roc_auc :  0.9268 ±  0.0000
+   pr_auc  :  0.9712 ±  0.0000
+[⏱️] Average time per run: 654.41 sec | Total: 654.41 sec
+
+Test 1
+[✓] teste | 1 runs
+GNN1 type: GCN | Layers: 1 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001 | f_beta | 1 | 
+GNN2 type: GCN | Layers: 2 | SG neighbors: 5
+   --- Node (GNN2) metrics (means ± 95% CI) ---
+   bacc    : 86.04 [86.04, 86.04]
+   macro_f1: 87.46 [87.46, 87.46]
+   --- Node (GNN2) metrics (means ± std) ---
+   acc     : 94.87 ±  0.00
+   bacc    : 86.04 ±  0.00
+   prec    : 84.54 ±  0.00
+   rec     : 74.58 ±  0.00
+   f1      : 77.98 ±  0.00
+   macro_f1: 87.46 ±  0.00
+   mcc     :  0.7579 ±  0.0000
+   roc_auc :  0.9508 ±  0.0000
+   pr_auc  :  0.8324 ±  0.0000
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 86.64 ±  0.00
+   bacc    : 81.81 ±  0.00
+   prec    : 85.66 ±  0.00
+   rec     : 95.36 ±  0.00
+   f1      : 90.11 ±  0.00
+   mcc     :  0.6845 ±  0.0000
+   roc_auc :  0.9437 ±  0.0000
+   pr_auc  :  0.9759 ±  0.0000
+[⏱️] Average time per run: 658.82 sec | Total: 658.82 sec
+
+Test 1
+[✓] teste | 1 runs
+GNN1 type: GCN | Layers: 1 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001 | f_beta | 1 | 
+GNN2 type: GCN | Layers: 2 | SG neighbors: 5
+   --- Node (GNN2) metrics (means ± 95% CI) ---
+   bacc    : 88.09 [88.09, 88.09]
+   macro_f1: 88.13 [88.13, 88.13]
+   --- Node (GNN2) metrics (means ± std) ---
+   acc     : 94.63 ±  0.00
+   bacc    : 88.09 ±  0.00
+   prec    : 80.75 ±  0.00
+   rec     : 79.68 ±  0.00
+   f1      : 79.51 ±  0.00
+   macro_f1: 88.13 ±  0.00
+   mcc     :  0.7675 ±  0.0000
+   roc_auc :  0.9594 ±  0.0000
+   pr_auc  :  0.8511 ±  0.0000
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 81.37 ±  0.00
+   bacc    : 77.10 ±  0.00
+   prec    : 83.26 ±  0.00
+   rec     : 92.21 ±  0.00
+   f1      : 86.33 ±  0.00
+   mcc     :  0.5944 ±  0.0000
+   roc_auc :  0.9294 ±  0.0000
+   pr_auc  :  0.9701 ±  0.0000
+[⏱️] Average time per run: 660.64 sec | Total: 660.64 sec
+
+Test 1
+[✓] teste | 1 runs
+GNN1 type: GCN | Layers: 1 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001 | f_beta | 1 | 
+GNN2 type: GCN | Layers: 2 | SG neighbors: 5
+   --- Node (GNN2) metrics (means ± 95% CI) ---
+   bacc    : 86.73 [86.73, 86.73]
+   macro_f1: 87.85 [87.85, 87.85]
+   --- Node (GNN2) metrics (means ± std) ---
+   acc     : 94.93 ±  0.00
+   bacc    : 86.73 ±  0.00
+   prec    : 83.38 ±  0.00
+   rec     : 76.21 ±  0.00
+   f1      : 78.74 ±  0.00
+   macro_f1: 87.85 ±  0.00
+   mcc     :  0.7633 ±  0.0000
+   roc_auc :  0.9559 ±  0.0000
+   pr_auc  :  0.8433 ±  0.0000
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 82.61 ±  0.00
+   bacc    : 78.58 ±  0.00
+   prec    : 84.59 ±  0.00
+   rec     : 91.03 ±  0.00
+   f1      : 87.00 ±  0.00
+   mcc     :  0.5934 ±  0.0000
+   roc_auc :  0.9362 ±  0.0000
+   pr_auc  :  0.9745 ±  0.0000
+[⏱️] Average time per run: 674.45 sec | Total: 674.45 sec
+
+Test 1
+[✓] teste | 1 runs
+GNN1 type: GCN | Layers: 1 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001 | f_beta | 1 | 
+GNN2 type: GCN | Layers: 2 | SG neighbors: 5
+   --- Node (GNN2) metrics (means ± 95% CI) ---
+   bacc    : 85.58 [85.58, 85.58]
+   macro_f1: 86.00 [86.00, 86.00]
+   --- Node (GNN2) metrics (means ± std) ---
+   acc     : 93.84 ±  0.00
+   bacc    : 85.58 ±  0.00
+   prec    : 77.60 ±  0.00
+   rec     : 75.03 ±  0.00
+   f1      : 75.72 ±  0.00
+   macro_f1: 86.00 ±  0.00
+   mcc     :  0.7236 ±  0.0000
+   roc_auc :  0.9463 ±  0.0000
+   pr_auc  :  0.8133 ±  0.0000
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 85.40 ±  0.00
+   bacc    : 80.57 ±  0.00
+   prec    : 86.66 ±  0.00
+   rec     : 92.31 ±  0.00
+   f1      : 89.23 ±  0.00
+   mcc     :  0.6299 ±  0.0000
+   roc_auc :  0.9338 ±  0.0000
+   pr_auc  :  0.9710 ±  0.0000
+[⏱️] Average time per run: 682.43 sec | Total: 682.43 sec
+
+Test 1
+[✓] teste | 1 runs
+GNN1 type: GCN | Layers: 1 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001 | f_beta | 1 | 
+GNN2 type: GCN | Layers: 2 | SG neighbors: 5
+   --- Node (GNN2) metrics (means ± 95% CI) ---
+   bacc    : 87.33 [87.33, 87.33]
+   macro_f1: 87.48 [87.48, 87.48]
+   --- Node (GNN2) metrics (means ± std) ---
+   acc     : 94.44 ±  0.00
+   bacc    : 87.33 ±  0.00
+   prec    : 78.88 ±  0.00
+   rec     : 77.90 ±  0.00
+   f1      : 78.29 ±  0.00
+   macro_f1: 87.48 ±  0.00
+   mcc     :  0.7502 ±  0.0000
+   roc_auc :  0.9568 ±  0.0000
+   pr_auc  :  0.8395 ±  0.0000
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 83.23 ±  0.00
+   bacc    : 76.10 ±  0.00
+   prec    : 82.78 ±  0.00
+   rec     : 94.40 ±  0.00
+   f1      : 87.91 ±  0.00
+   mcc     :  0.5806 ±  0.0000
+   roc_auc :  0.9275 ±  0.0000
+   pr_auc  :  0.9704 ±  0.0000
+[⏱️] Average time per run: 688.46 sec | Total: 688.46 sec
+

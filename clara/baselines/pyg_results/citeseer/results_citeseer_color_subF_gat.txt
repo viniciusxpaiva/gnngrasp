@@ -1,0 +1,154 @@
+======================================================================
+[✓] GRID SUMMARY (top-10 by Macro F1):
+======================================================================
+GAT  | L=2 | K=2 | bAcc=72.67±0.84 | F1=70.28±1.23 | 34.32s/run
+GAT  | L=1 | K=3 | bAcc=71.49±0.45 | F1=70.20±0.62 | 23.47s/run
+GAT  | L=1 | K=2 | bAcc=71.74±0.63 | F1=70.02±0.70 | 23.97s/run
+GAT  | L=1 | K=6 | bAcc=71.52±0.75 | F1=69.57±0.90 | 27.78s/run
+GAT  | L=1 | K=4 | bAcc=71.27±0.53 | F1=69.56±0.78 | 24.17s/run
+GAT  | L=3 | K=2 | bAcc=71.95±0.87 | F1=69.27±1.00 | 36.37s/run
+GAT  | L=4 | K=2 | bAcc=71.44±1.09 | F1=68.48±1.47 | 41.62s/run
+GAT  | L=2 | K=3 | bAcc=71.17±0.72 | F1=68.24±0.89 | 30.83s/run
+GAT  | L=1 | K=5 | bAcc=70.55±0.75 | F1=68.15±0.71 | 27.04s/run
+GAT  | L=3 | K=3 | bAcc=70.10±1.04 | F1=67.29±1.17 | 33.60s/run
+
+Test 1
+[✓] citeseer_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 1 | SG neighbors: 2
+ - Balanced Accuracy : 71.74 ± 0.63
+ - Macro F1          : 70.02 ± 0.70
+[⏱️] Average time per run: 23.97 sec | Total: 239.72 sec
+
+Test 2
+[✓] citeseer_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 1 | SG neighbors: 3
+ - Balanced Accuracy : 71.49 ± 0.45
+ - Macro F1          : 70.20 ± 0.62
+[⏱️] Average time per run: 23.47 sec | Total: 234.70 sec
+
+Test 3
+[✓] citeseer_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 1 | SG neighbors: 4
+ - Balanced Accuracy : 71.27 ± 0.53
+ - Macro F1          : 69.56 ± 0.78
+[⏱️] Average time per run: 24.17 sec | Total: 241.71 sec
+
+Test 4
+[✓] citeseer_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 1 | SG neighbors: 5
+ - Balanced Accuracy : 70.55 ± 0.75
+ - Macro F1          : 68.15 ± 0.71
+[⏱️] Average time per run: 27.04 sec | Total: 270.39 sec
+
+Test 5
+[✓] citeseer_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 1 | SG neighbors: 6
+ - Balanced Accuracy : 71.52 ± 0.75
+ - Macro F1          : 69.57 ± 0.90
+[⏱️] Average time per run: 27.78 sec | Total: 277.77 sec
+
+Test 6
+[✓] citeseer_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 2 | SG neighbors: 2
+ - Balanced Accuracy : 72.67 ± 0.84
+ - Macro F1          : 70.28 ± 1.23
+[⏱️] Average time per run: 34.32 sec | Total: 343.16 sec
+
+Test 7
+[✓] citeseer_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 2 | SG neighbors: 3
+ - Balanced Accuracy : 71.17 ± 0.72
+ - Macro F1          : 68.24 ± 0.89
+[⏱️] Average time per run: 30.83 sec | Total: 308.28 sec
+
+Test 8
+[✓] citeseer_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 2 | SG neighbors: 4
+ - Balanced Accuracy : 69.88 ± 0.66
+ - Macro F1          : 66.81 ± 1.21
+[⏱️] Average time per run: 29.29 sec | Total: 292.92 sec
+
+Test 9
+[✓] citeseer_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 2 | SG neighbors: 5
+ - Balanced Accuracy : 69.41 ± 0.86
+ - Macro F1          : 65.94 ± 1.20
+[⏱️] Average time per run: 31.41 sec | Total: 314.14 sec
+
+Test 10
+[✓] citeseer_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 2 | SG neighbors: 6
+ - Balanced Accuracy : 70.17 ± 0.50
+ - Macro F1          : 66.09 ± 0.99
+[⏱️] Average time per run: 26.83 sec | Total: 268.28 sec
+
+Test 11
+[✓] citeseer_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 3 | SG neighbors: 2
+ - Balanced Accuracy : 71.95 ± 0.87
+ - Macro F1          : 69.27 ± 1.00
+[⏱️] Average time per run: 36.37 sec | Total: 363.71 sec
+
+Test 12
+[✓] citeseer_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 3 | SG neighbors: 3
+ - Balanced Accuracy : 70.10 ± 1.04
+ - Macro F1          : 67.29 ± 1.17
+[⏱️] Average time per run: 33.60 sec | Total: 335.97 sec
+
+Test 13
+[✓] citeseer_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 3 | SG neighbors: 4
+ - Balanced Accuracy : 69.12 ± 1.03
+ - Macro F1          : 65.87 ± 1.28
+[⏱️] Average time per run: 32.41 sec | Total: 324.06 sec
+
+Test 14
+[✓] citeseer_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 3 | SG neighbors: 5
+ - Balanced Accuracy : 69.36 ± 0.68
+ - Macro F1          : 66.00 ± 0.95
+[⏱️] Average time per run: 31.28 sec | Total: 312.76 sec
+
+Test 15
+[✓] citeseer_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 3 | SG neighbors: 6
+ - Balanced Accuracy : 68.98 ± 1.13
+ - Macro F1          : 65.69 ± 1.37
+[⏱️] Average time per run: 31.80 sec | Total: 318.01 sec
+
+Test 16
+[✓] citeseer_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 4 | SG neighbors: 2
+ - Balanced Accuracy : 71.44 ± 1.09
+ - Macro F1          : 68.48 ± 1.47
+[⏱️] Average time per run: 41.62 sec | Total: 416.21 sec
+
+Test 17
+[✓] citeseer_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 4 | SG neighbors: 3
+ - Balanced Accuracy : 69.62 ± 1.04
+ - Macro F1          : 66.68 ± 1.29
+[⏱️] Average time per run: 35.43 sec | Total: 354.29 sec
+
+Test 18
+[✓] citeseer_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 4 | SG neighbors: 4
+ - Balanced Accuracy : 68.63 ± 0.99
+ - Macro F1          : 65.46 ± 1.41
+[⏱️] Average time per run: 26.39 sec | Total: 263.92 sec
+
+Test 19
+[✓] citeseer_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 4 | SG neighbors: 5
+ - Balanced Accuracy : 68.36 ± 0.83
+ - Macro F1          : 65.07 ± 1.06
+[⏱️] Average time per run: 25.23 sec | Total: 252.32 sec
+
+Test 20
+[✓] citeseer_coloring_subFall_gat | 10 runs
+GNN type: gat | Layers: 4 | SG neighbors: 6
+ - Balanced Accuracy : 68.24 ± 0.80
+ - Macro F1          : 64.70 ± 1.26
+[⏱️] Average time per run: 25.16 sec | Total: 251.60 sec
+

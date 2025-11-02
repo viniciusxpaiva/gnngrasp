@@ -1,0 +1,25 @@
+.custom-popup.popup-content {
+  width: 600px;
+  margin: auto;
+  background: rgb(255, 255, 255);
+  padding: 5px;
+  height: 5vh;
+}
+
+.custom-popup.popup-arrow {
+  color: rgb(255, 255, 255);
+}
+
+.custom-popup[role='tooltip'].popup-content {
+  width: 600px;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 3px;
+}
+
+.custom-popup.popup-overlay {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.custom-popup[data-popup='tooltip'].popup-overlay {
+  background: transparent;
+  width: 600px;
+}

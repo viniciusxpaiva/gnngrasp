@@ -1,0 +1,40 @@
+Test 1
+[✓] PubMed_teste | 10 runs
+GNN1 type: GCN | Layers: 1 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001 | f_beta | 1 | 
+GNN2 type: GCN | Layers: 2 | SG neighbors: 5
+   --- Node (GNN2) metrics (means ± 95% CI) ---
+   Macro f1: 88.47, 87.94, 88.61, 88.59, 88.15, 88.47, 88.10, 88.21, 87.54, 88.31, 
+   bacc    : 88.74 [88.52, 88.96]
+   macro_f1: 88.24 [88.00, 88.48]
+Test 1
+[✓] PubMed_teste | 10 runs
+GNN1 type: GCN | Layers: 1 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001 | f_beta | 1 | 
+GNN2 type: GCN | Layers: 2 | SG neighbors: 5
+   --- Node (GNN2) metrics (means ± 95% CI) ---
+   Macro f1: 88.81 | 88.26 | 88.04 | 88.02 | 87.39 | 87.61 | 88.59 | 88.42 | 88.47 | 88.50 | 
+   bacc    : 88.61 [88.28, 88.94]
+   macro_f1: 88.21 [87.89, 88.53]
+Test 1
+[✓] PubMed_teste | 10 runs
+GNN1 type: GCN | Layers: 1 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001 | f_beta | 1 | 
+GNN2 type: GCN | Layers: 2 | SG neighbors: 5
+   --- Node (GNN2) metrics (means ± 95% CI) ---
+   Macro f1: 88.39 | 88.35 | 87.92 | 88.25 | 88.38 | 87.57 | 88.19 | 88.30 | 88.17 | 88.00 | 
+   bacc    : 88.69 [88.44, 88.94]
+   macro_f1: 88.15 [87.97, 88.34]
+Test 1
+[✓] PubMed_teste | 10 runs
+GNN1 type: GCN | Layers: 1 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001 | f_beta | 1 | 
+GNN2 type: GCN | Layers: 2 | SG neighbors: 5
+   --- Node (GNN2) metrics (means ± 95% CI) ---
+   Macro f1: 88.09, 88.56, 88.58, 88.39, 88.36, 88.34, 88.20, 88.37, 87.86, 88.48, 
+   bacc    : 88.79 [88.52, 89.06]
+   macro_f1: 88.32 [88.16, 88.48]
+Test 1
+[✓] PubMed_teste | 10 runs
+GNN1 type: GCN | Layers: 1 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001 | f_beta | 1 | 
+GNN2 type: GCN | Layers: 2 | SG neighbors: 5
+   --- Node (GNN2) metrics (means ± 95% CI) ---
+   Macro f1: 88.51 | 88.59 | 88.45 | 87.32 | 88.21 | 86.58 | 88.39 | 88.76 | 87.96 | 88.35 | 
+   bacc    : 88.76 [88.48, 89.03]
+   macro_f1: 88.11 [87.63, 88.59]

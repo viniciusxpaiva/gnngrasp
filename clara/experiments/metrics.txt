@@ -1,0 +1,84 @@
+Original:
+
+MCC      : 0.6808
+Precision: 0.6476
+Recall   : 0.7541
+F1 Score : 0.6968
+AUC      : 0.8656
+
+GNN: (USE_ENSAMBLE = False | FEATURES_MODE = "embd" | TOP_N = 300 | EPOCHS = 100)
+
+MCC: 0.31
+Precision: 0.21
+Recall: 0.64
+F1-Score: 0.32
+AUC: 0.75
+
+TP=4826
+FN=2748
+FP=17688
+
+
+--------------------------------------------------
+T0
+
+MCC: 0.5
+Precision: 0.53
+Recall: 0.53
+F1-Score: 0.53
+AUC: 0.75
+
+
+T1
+
+MCC: 0.52
+Precision: 0.63
+Recall: 0.47
+F1-Score: 0.54
+AUC: 0.73
+
+---------------------------------------------------
+
+
+
+Pontos a serem analisados:
+
+Parâmetros de predição:
+- uso de ensembles?
+- combinação de propriedades (19) e embeddings (1280)? projeção? attention?
+- modelo dinâmico? número de templates para treinamento?
+
+Graph edges:
+- atualmente não usamos features para as edges
+- cutoff distance 5A para definição de edgs (alto?)
+- como fica a relação node features (1280) x edge features (7)? projeção? attention?
+
+
+
+------------------------
+
+Notes:
+
+Ensemble: 2 gnn separados ou ensemble "interno" da gnn
+Avaliar a curva de treinamento
+Graficos parametro x impacto
+Edge distance: normalizacao ou one-hot encoding (https://eprints.lancs.ac.uk/id/eprint/167980/2/TextDrivenVideoAcceleration_TPAMI2022.pdf)
+Representação uniforme das node properties (normalizar, Representação binária)
+
+
+
+
+
+=== Global Evaluation Metrics (GRaSP Original) === ori_output/
+MCC      : 0.6173
+Precision: 0.5163
+Recall   : 0.7827
+F1 Score : 0.6222
+AUC      : 0.8759
+
+=== Global Evaluation Metrics (GRaSP Original) === single_results/
+MCC      : 0.7224
+Precision: 0.7896
+Recall   : 0.6860
+F1 Score : 0.7341
+AUC      : 0.8379

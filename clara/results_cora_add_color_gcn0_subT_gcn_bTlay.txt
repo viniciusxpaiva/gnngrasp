@@ -1,0 +1,274 @@
+Old subgraph classifier
+
+Test 1
+[✓] cora_add_color_gcn0_subT_gcn_bTlay | 10 runs
+GNN1 type: GCN | Layers: 1 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001
+GNN2 type: gcn | Layers: 1 | SG neighbors: 2 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 0.00 ± 0.00
+ - Macro F1          : 0.00 ± 0.00
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 82.95 ±  0.94
+   bacc    : 76.24 ±  0.58
+   prec    : 62.56 ±  3.11
+   rec     : 67.73 ±  2.44
+   f1      : 63.30 ±  0.81
+   mcc     :  0.5283 ±  0.0122
+   roc_auc :  0.8126 ±  0.0116
+   pr_auc  :  0.6574 ±  0.0114
+[⏱️] Average time per run: 67.26 sec | Total: 672.55 sec
+
+Test 2
+[✓] cora_add_color_gcn0_subT_gcn_bTlay | 10 runs
+GNN1 type: GCN | Layers: 1 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001
+GNN2 type: gcn | Layers: 1 | SG neighbors: 3 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 0.00 ± 0.00
+ - Macro F1          : 0.00 ± 0.00
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 74.90 ±  1.22
+   bacc    : 72.38 ±  1.08
+   prec    : 59.31 ±  2.05
+   rec     : 75.14 ±  3.05
+   f1      : 65.59 ±  1.28
+   mcc     :  0.4513 ±  0.0208
+   roc_auc :  0.7701 ±  0.0185
+   pr_auc  :  0.6788 ±  0.0284
+[⏱️] Average time per run: 51.37 sec | Total: 513.72 sec
+
+Test 3
+[✓] cora_add_color_gcn0_subT_gcn_bTlay | 10 runs
+GNN1 type: GCN | Layers: 1 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001
+GNN2 type: gcn | Layers: 1 | SG neighbors: 4 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 0.00 ± 0.00
+ - Macro F1          : 0.00 ± 0.00
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 76.42 ±  1.27
+   bacc    : 73.47 ±  1.39
+   prec    : 74.50 ±  2.44
+   rec     : 82.58 ±  2.37
+   f1      : 77.27 ±  0.93
+   mcc     :  0.5096 ±  0.0271
+   roc_auc :  0.8194 ±  0.0155
+   pr_auc  :  0.8342 ±  0.0139
+[⏱️] Average time per run: 39.89 sec | Total: 398.90 sec
+
+Test 4
+[✓] cora_add_color_gcn0_subT_gcn_bTlay | 10 runs
+GNN1 type: GCN | Layers: 1 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001
+GNN2 type: gcn | Layers: 1 | SG neighbors: 5 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 0.00 ± 0.00
+ - Macro F1          : 0.00 ± 0.00
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 82.55 ±  2.35
+   bacc    : 74.22 ±  3.71
+   prec    : 83.22 ±  2.92
+   rec     : 93.34 ±  1.49
+   f1      : 87.69 ±  1.57
+   mcc     :  0.5431 ±  0.0723
+   roc_auc :  0.8982 ±  0.0132
+   pr_auc  :  0.9426 ±  0.0100
+[⏱️] Average time per run: 34.95 sec | Total: 349.54 sec
+
+Test 5
+[✓] cora_add_color_gcn0_subT_gcn_bTlay | 10 runs
+GNN1 type: GCN | Layers: 2 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001
+GNN2 type: gcn | Layers: 2 | SG neighbors: 2 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 0.00 ± 0.00
+ - Macro F1          : 0.00 ± 0.00
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 82.90 ±  0.94
+   bacc    : 75.27 ±  0.96
+   prec    : 61.41 ±  2.77
+   rec     : 65.42 ±  1.90
+   f1      : 61.95 ±  1.62
+   mcc     :  0.5126 ±  0.0213
+   roc_auc :  0.8025 ±  0.0136
+   pr_auc  :  0.6331 ±  0.0202
+[⏱️] Average time per run: 54.58 sec | Total: 545.77 sec
+
+Test 6
+[✓] cora_add_color_gcn0_subT_gcn_bTlay | 10 runs
+GNN1 type: GCN | Layers: 2 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001
+GNN2 type: gcn | Layers: 2 | SG neighbors: 3 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 0.00 ± 0.00
+ - Macro F1          : 0.00 ± 0.00
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 75.31 ±  1.23
+   bacc    : 72.18 ±  1.03
+   prec    : 60.44 ±  2.05
+   rec     : 73.33 ±  2.80
+   f1      : 65.53 ±  1.37
+   mcc     :  0.4531 ±  0.0233
+   roc_auc :  0.7691 ±  0.0117
+   pr_auc  :  0.6705 ±  0.0228
+[⏱️] Average time per run: 42.00 sec | Total: 420.01 sec
+
+Test 7
+[✓] cora_add_color_gcn0_subT_gcn_bTlay | 10 runs
+GNN1 type: GCN | Layers: 2 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001
+GNN2 type: gcn | Layers: 2 | SG neighbors: 4 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 0.00 ± 0.00
+ - Macro F1          : 0.00 ± 0.00
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 76.16 ±  1.48
+   bacc    : 73.34 ±  1.54
+   prec    : 73.66 ±  2.52
+   rec     : 82.68 ±  1.82
+   f1      : 76.87 ±  1.54
+   mcc     :  0.5029 ±  0.0329
+   roc_auc :  0.8135 ±  0.0201
+   pr_auc  :  0.8246 ±  0.0234
+[⏱️] Average time per run: 34.79 sec | Total: 347.87 sec
+
+Test 8
+[✓] cora_add_color_gcn0_subT_gcn_bTlay | 10 runs
+GNN1 type: GCN | Layers: 2 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001
+GNN2 type: gcn | Layers: 2 | SG neighbors: 5 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 0.00 ± 0.00
+ - Macro F1          : 0.00 ± 0.00
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 82.33 ±  2.47
+   bacc    : 74.21 ±  3.43
+   prec    : 82.77 ±  2.67
+   rec     : 93.40 ±  1.05
+   f1      : 87.51 ±  1.67
+   mcc     :  0.5458 ±  0.0645
+   roc_auc :  0.8890 ±  0.0157
+   pr_auc  :  0.9369 ±  0.0111
+[⏱️] Average time per run: 36.48 sec | Total: 364.77 sec
+
+Test 9
+[✓] cora_add_color_gcn0_subT_gcn_bTlay | 10 runs
+GNN1 type: GCN | Layers: 3 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001
+GNN2 type: gcn | Layers: 3 | SG neighbors: 2 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 0.00 ± 0.00
+ - Macro F1          : 0.00 ± 0.00
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 82.71 ±  0.55
+   bacc    : 75.65 ±  1.23
+   prec    : 61.64 ±  2.82
+   rec     : 66.61 ±  2.56
+   f1      : 62.45 ±  1.45
+   mcc     :  0.5168 ±  0.0178
+   roc_auc :  0.8137 ±  0.0152
+   pr_auc  :  0.6470 ±  0.0240
+[⏱️] Average time per run: 62.06 sec | Total: 620.64 sec
+
+Test 10
+[✓] cora_add_color_gcn0_subT_gcn_bTlay | 10 runs
+GNN1 type: GCN | Layers: 3 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001
+GNN2 type: gcn | Layers: 3 | SG neighbors: 3 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 0.00 ± 0.00
+ - Macro F1          : 0.00 ± 0.00
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 74.23 ±  1.40
+   bacc    : 72.24 ±  0.97
+   prec    : 58.77 ±  2.14
+   rec     : 76.16 ±  2.23
+   f1      : 65.88 ±  1.01
+   mcc     :  0.4452 ±  0.0235
+   roc_auc :  0.7826 ±  0.0110
+   pr_auc  :  0.6784 ±  0.0163
+[⏱️] Average time per run: 40.61 sec | Total: 406.14 sec
+
+Test 11
+[✓] cora_add_color_gcn0_subT_gcn_bTlay | 10 runs
+GNN1 type: GCN | Layers: 3 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001
+GNN2 type: gcn | Layers: 3 | SG neighbors: 4 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 0.00 ± 0.00
+ - Macro F1          : 0.00 ± 0.00
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 75.95 ±  1.90
+   bacc    : 73.12 ±  1.68
+   prec    : 74.19 ±  3.43
+   rec     : 81.84 ±  2.48
+   f1      : 76.78 ±  1.30
+   mcc     :  0.4991 ±  0.0355
+   roc_auc :  0.8151 ±  0.0101
+   pr_auc  :  0.8220 ±  0.0135
+[⏱️] Average time per run: 32.09 sec | Total: 320.90 sec
+
+Test 12
+[✓] cora_add_color_gcn0_subT_gcn_bTlay | 10 runs
+GNN1 type: GCN | Layers: 3 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001
+GNN2 type: gcn | Layers: 3 | SG neighbors: 5 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 0.00 ± 0.00
+ - Macro F1          : 0.00 ± 0.00
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 82.27 ±  2.48
+   bacc    : 74.31 ±  3.61
+   prec    : 83.12 ±  2.76
+   rec     : 92.46 ±  1.38
+   f1      : 87.30 ±  1.71
+   mcc     :  0.5420 ±  0.0666
+   roc_auc :  0.8871 ±  0.0185
+   pr_auc  :  0.9334 ±  0.0124
+[⏱️] Average time per run: 33.38 sec | Total: 333.84 sec
+
+Test 13
+[✓] cora_add_color_gcn0_subT_gcn_bTlay | 10 runs
+GNN1 type: GCN | Layers: 4 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001
+GNN2 type: gcn | Layers: 4 | SG neighbors: 2 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 0.00 ± 0.00
+ - Macro F1          : 0.00 ± 0.00
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 82.18 ±  0.76
+   bacc    : 75.19 ±  1.11
+   prec    : 59.76 ±  1.79
+   rec     : 66.38 ±  2.18
+   f1      : 61.68 ±  1.48
+   mcc     :  0.5034 ±  0.0186
+   roc_auc :  0.8116 ±  0.0079
+   pr_auc  :  0.6420 ±  0.0262
+[⏱️] Average time per run: 70.70 sec | Total: 707.01 sec
+
+Test 14
+[✓] cora_add_color_gcn0_subT_gcn_bTlay | 10 runs
+GNN1 type: GCN | Layers: 4 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001
+GNN2 type: gcn | Layers: 4 | SG neighbors: 3 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 0.00 ± 0.00
+ - Macro F1          : 0.00 ± 0.00
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 74.95 ±  1.04
+   bacc    : 72.40 ±  1.15
+   prec    : 59.89 ±  2.18
+   rec     : 74.61 ±  2.63
+   f1      : 65.70 ±  1.36
+   mcc     :  0.4532 ±  0.0208
+   roc_auc :  0.7775 ±  0.0137
+   pr_auc  :  0.6773 ±  0.0146
+[⏱️] Average time per run: 44.75 sec | Total: 447.49 sec
+
+Test 15
+[✓] cora_add_color_gcn0_subT_gcn_bTlay | 10 runs
+GNN1 type: GCN | Layers: 4 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001
+GNN2 type: gcn | Layers: 4 | SG neighbors: 4 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 0.00 ± 0.00
+ - Macro F1          : 0.00 ± 0.00
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 75.63 ±  1.88
+   bacc    : 72.85 ±  2.04
+   prec    : 73.78 ±  2.71
+   rec     : 81.73 ±  2.50
+   f1      : 76.32 ±  1.71
+   mcc     :  0.4941 ±  0.0424
+   roc_auc :  0.8000 ±  0.0207
+   pr_auc  :  0.8090 ±  0.0300
+[⏱️] Average time per run: 33.69 sec | Total: 336.93 sec
+
+Test 16
+[✓] cora_add_color_gcn0_subT_gcn_bTlay | 10 runs
+GNN1 type: GCN | Layers: 4 | add pooling | Dropout: 0.2 | Epochs: 150 | LR: 0.0001
+GNN2 type: gcn | Layers: 4 | SG neighbors: 5 | fusion_mode=concat | context_norm=layernorm
+ - Balanced Accuracy : 0.00 ± 0.00
+ - Macro F1          : 0.00 ± 0.00
+   --- Subgraph (GNN1) metrics (OvR means ± std) ---
+   acc     : 81.92 ±  2.10
+   bacc    : 73.76 ±  3.25
+   prec    : 82.83 ±  2.48
+   rec     : 92.80 ±  1.52
+   f1      : 87.27 ±  1.37
+   mcc     :  0.5379 ±  0.0570
+   roc_auc :  0.8860 ±  0.0118
+   pr_auc  :  0.9332 ±  0.0091
+[⏱️] Average time per run: 35.44 sec | Total: 354.45 sec
+
