@@ -69,55 +69,6 @@ export default function ResultsPageTabs(props) {
   return (
     <>
       <Box sx={{ width: "100%" }}>
-        <Box
-          sx={{
-            borderBottom: 1,
-            borderColor: "divider",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-            variant="scrollable"
-            allowScrollButtonsMobile
-          >
-            {props.graspSites.length > 0 ? (
-              <Tab
-                label="GRaSP"
-                key={"grasp"}
-                sx={{
-                  "&:hover": {
-                    color: "#1976d2",
-                    borderBottom: 2,
-                    borderColor: "#1976d2",
-                  },
-                }}
-                {...a11yProps(1)}
-              />
-            ) : (
-              <NoMaxWidthTooltip title="GRaSP did not predict any binding site for this protein">
-                <Box>
-                  <Tab
-                    label="GRaSP"
-                    key={"grasp"}
-                    sx={{
-                      "&:hover": {
-                        color: "#1976d2",
-                        borderBottom: 2,
-                        borderColor: "#1976d2",
-                      },
-                    }}
-                    {...a11yProps(1)}
-                    disabled
-                  />
-                </Box>
-              </NoMaxWidthTooltip>
-            )}
-          </Tabs>
-        </Box>
         <CustomTabPanel value={value} index={0}>
           <MolViewerPredictors
             pred={props.predictors[0]}

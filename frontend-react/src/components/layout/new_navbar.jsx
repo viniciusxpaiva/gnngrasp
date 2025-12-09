@@ -13,13 +13,19 @@ import { Link, useLocation } from "react-router-dom";
 
 //const pagesLinks = { 'Example': '/results/A4HXH5', 'Available data': '/datatable', 'Contact': '/contact', 'Help': '/help' };
 const pagesLinks = {
-  "Available data": "/datatable",
+  About: "/about",
   Contact: "/contact",
   Help: "/help",
 };
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
+
+  const navStyles = {
+    background: "linear-gradient(90deg, #1f2a44 0%, #2f3b52 100%)",
+    color: "#e8ecf2",
+    boxShadow: "0 2px 12px rgba(0, 0, 0, 0.25)",
+  };
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -32,7 +38,7 @@ function ResponsiveAppBar() {
   const currentPage = location.pathname;
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={navStyles}>
       <div className="container">
         <Container maxWidth="xl">
           <Toolbar disableGutters sx={{ display: "flex" }}>
@@ -51,13 +57,13 @@ function ResponsiveAppBar() {
                 textDecoration: "none",
               }}
             >
-              BENDER DB |
+              GNN-GRaSP |
             </Typography>
             <Typography
               variant="body2"
               sx={{ display: { xs: "none", md: "flex" } }}
             >
-              PROTEIN BINDING SITE DATABASE
+              PROTEIN BINDING SITE PREDICTOR
             </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -112,7 +118,7 @@ function ResponsiveAppBar() {
                 textDecoration: "none",
               }}
             >
-              BENDER DB
+              GNN-GRaSP
             </Typography>
             <Box
               sx={{
@@ -126,7 +132,11 @@ function ResponsiveAppBar() {
                   key={k}
                   component={Link}
                   to={v}
-                  sx={{ my: 2, color: "white", display: "block" }}
+                  sx={{
+                    my: 2,
+                    color: "#e8ecf2",
+                    display: "block",
+                  }}
                 >
                   <Typography
                     variant="body2"

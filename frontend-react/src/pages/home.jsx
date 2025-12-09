@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import BaseLayout from "../components/layout/base";
 import Paper from "@mui/material/Paper";
 import InputBase from "@mui/material/InputBase";
@@ -7,299 +7,376 @@ import IconButton from "@mui/material/IconButton";
 import SearchIcon from "@mui/icons-material/Search";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
+import Chip from "@mui/material/Chip";
 
 const Home = () => {
-  const [searchString, setSearchString] = useState("");
+    const [searchString, setSearchString] = useState("");
+    const [uploadedFile, setUploadedFile] = useState(null);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const fileInputRef = useRef(null);
+    const navigate = useNavigate();
 
-  const navigate = useNavigate();
+    const submitToProcess = async (code, file) => {
+        if (!code && !file) return;
+        setIsSubmitting(true);
+        try {
+            let response;
+            if (file) {
+                const formData = new FormData();
+                formData.append("pdbFile", file);
+                formData.append("pdbCode", code);
+                response = await fetch("/process", { method: "POST", body: formData });
+            } else {
+                response = await fetch("/process", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ pdbCode: code }),
+                });
+            }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+            if (!response.ok) {
+                navigate(`/notfound`);
+                return;
+            }
 
-    // Fetch the processed string from the Flask backend
-    const fetchProcessedString = async () => {
-      try {
-        const response = await fetch("/prot_folder", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ searchString }),
-        });
+            const data = await response.json();
+            if (data.error || !data.job_id) {
+                navigate(`/notfound`);
+                return;
+            }
 
-        const data = await response.json();
-        if (data.prot_folder !== "") {
-          // Navigate to the "results" page with the input string
-          navigate(`/results/${encodeURIComponent(searchString)}`);
-        } else {
-          // Navigate to the "results" page with the input string
-          navigate(`/notfound`);
+            navigate(`/results/${data.job_id}`, {
+                replace: true,
+                state: {
+                    pdbCode: data.pdb_code,
+                    jobData: data,
+                    uploadedFileName: file?.name || null,
+                },
+            });
+        } catch (err) {
+            console.error(err);
+            navigate(`/notfound`);
+        } finally {
+            setIsSubmitting(false);
         }
-      } catch (error) {
-        console.error("Error:", error);
-      }
     };
 
-    fetchProcessedString();
-  };
+    const handlePredictSubmit = (e) => {
+        e.preventDefault();
+        const trimmed = searchString.trim().toLowerCase();
+        if (!trimmed && !uploadedFile) return;
+        submitToProcess(trimmed, uploadedFile);
+    };
 
-  return (
-    <>
-      <BaseLayout>
-        <div class="jumbotron bg-light-dark">
-          <div class="container">
-            <div class="row mt-6">
-              <div class="col-md-12 text-center">
-                <h1 class="display-4 text-light mt-5">
-                  <strong>GNN-GRaSP</strong>
-                </h1>
-                <p
-                  className="display-7 text-light mt-3"
-                  style={{ fontSize: "22px" }}
-                >
-                  a database of protein Binding sitEs across Neglected DiseasE
-                  pRoteomes
-                </p>
-                <div className="container p-0 mb-5 mt-5 justify-content-center">
-                  <div className="row justify-content-center">
-                    <div className="col-12 col-md-10 col-lg-8">
-                      <Paper
-                        component="form"
-                        sx={{
-                          p: "2px 4px",
-                          display: "flex",
-                          alignItems: "center",
-                          width: "100%",
-                          marginBottom: "10px",
-                        }}
-                        onSubmit={handleSubmit}
-                      >
-                        <IconButton
-                          type="button"
-                          sx={{ p: "10px" }}
-                          aria-label="search"
-                          disabled
-                        >
-                          <SearchIcon />
-                        </IconButton>
+    const handleFileUpload = (event) => {
+        const file = event.target.files && event.target.files[0];
+        if (!file) return;
+        const cleanName = file.name.replace(/\.pdb$/i, "");
+        setUploadedFile(file);
+        setSearchString(cleanName.trim().toLowerCase());
+    };
 
-                        <InputBase
-                          onChange={(e) =>
-                            setSearchString(e.target.value.toUpperCase())
-                          }
-                          sx={{ ml: 1, flex: 1 }}
-                          placeholder="Search for protein UniProt accession"
-                          inputProps={{ "aria-label": "search for protein" }}
-                        />
-                        <IconButton sx={{ p: "10px" }} aria-label="menu">
-                          <Button variant="contained" onClick={handleSubmit}>
-                            Search
-                          </Button>
-                        </IconButton>
-                      </Paper>
+    const handleClearFile = () => {
+        setUploadedFile(null);
+        setSearchString("");
+        if (fileInputRef.current) {
+            fileInputRef.current.value = "";
+        }
+    };
 
-                      <Paper
-                        sx={{
-                          p: "2px 4px",
-                          display: "flex",
-                          alignItems: "center",
-                          width: "100%",
-                          backgroundColor: "inherit",
-                        }}
-                        elevation={0}
-                      >
-                        <Typography
-                          variant="body"
-                          sx={{ color: "white", mr: 1 }}
-                        >
-                          Examples:
-                        </Typography>
-                        <Button
-                          variant="outlined"
-                          component={Link}
-                          to="/results/Q7Z1V1"
-                          sx={{ color: "white", borderColor: "white", mr: 2 }}
-                        >
-                          Q7Z1V1
-                        </Button>
-                        <Button
-                          variant="outlined"
-                          component={Link}
-                          to="/results/A0A5K4EN06"
-                          sx={{ color: "white", borderColor: "white", mr: 2 }}
-                        >
-                          A0A5K4EN06
-                        </Button>
-                        <Button
-                          variant="outlined"
-                          component={Link}
-                          to="/results/E9AHS8"
-                          sx={{ color: "white", borderColor: "white" }}
-                        >
-                          E9AHS8
-                        </Button>
-                      </Paper>
+    const handleExampleClick = (pdb) => {
+        const code = pdb.trim().toLowerCase();
+        submitToProcess(code, null);
+    };
+
+    const hasInput = Boolean(searchString || uploadedFile);
+
+    return (
+        <BaseLayout>
+            <div className="jumbotron bg-light-dark">
+                <div className="container">
+                    <div className="row mt-6">
+                        <div className="col-md-12 text-center">
+                            <h1 className="display-4 text-light mt-5">
+                                <strong>GNN-GRaSP</strong>
+                            </h1>
+                            <p
+                                className="display-7 text-light mt-3"
+                                style={{ fontSize: "22px" }}
+                            >
+                                a protein binding site predictor using hierarchical graph neural networks
+                            </p>
+
+                            <div className="container p-0 mb-5 mt-5 justify-content-center">
+                                <div className="row justify-content-center">
+                                    <div className="col-12 col-md-10 col-lg-8">
+                                        {/* ----- PDB code OU upload de PDB no mesmo Paper ----- */}
+                                        <Paper
+                                            component="form"
+                                            sx={{
+                                                p: "2px 4px",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                width: "100%",
+                                                marginBottom: "10px",
+                                                backgroundColor: "white",
+                                                flexWrap: "wrap",
+                                                gap: 1,
+                                            }}
+                                            onSubmit={handlePredictSubmit}
+                                        >
+                                            <IconButton
+                                                type="button"
+                                                sx={{ p: "10px" }}
+                                                aria-label="search"
+                                                disabled
+                                            >
+                                                <SearchIcon />
+                                            </IconButton>
+
+                                            <InputBase
+                                                value={uploadedFile ? "" : searchString}
+                                                onChange={(e) => {
+                                                    setUploadedFile(null);
+                                                    if (fileInputRef.current) {
+                                                        fileInputRef.current.value = "";
+                                                    }
+                                                    setSearchString(e.target.value.toLowerCase());
+                                                }}
+                                                sx={{ ml: 1, flex: 1 }}
+                                                placeholder={
+                                                    uploadedFile
+                                                        ? `Uploaded file: ${uploadedFile.name}`
+                                                        : "Enter PDB code or upload a PDB file"
+                                                }
+                                                inputProps={{
+                                                    "aria-label": "search PDB code",
+                                                    readOnly: !!uploadedFile,
+                                                }}
+                                            />
+
+                                            {uploadedFile && (
+                                                <Chip
+                                                    label={uploadedFile.name}
+                                                    onDelete={handleClearFile}
+                                                    size="small"
+                                                    sx={{ maxWidth: "45%" }}
+                                                />
+                                            )}
+
+                                            <input
+                                                type="file"
+                                                accept=".pdb"
+                                                ref={fileInputRef}
+                                                style={{ display: "none" }}
+                                                onChange={handleFileUpload}
+                                            />
+                                            <Button
+                                                variant="outlined"
+                                                type="button"
+                                                onClick={() => fileInputRef.current?.click()}
+                                                disabled={isSubmitting}
+                                            >
+                                                Upload PDB
+                                            </Button>
+                                            <Button
+                                                variant="contained"
+                                                type="submit"
+                                                disabled={!hasInput || isSubmitting}
+                                            >
+                                                {isSubmitting ? "Processing..." : "Predict"}
+                                            </Button>
+                                        </Paper>
+
+
+                                        {/* EXEMPLOS (PDB CODES) */}
+                                        <Paper
+                                            sx={{
+                                                p: "2px 4px",
+                                                display: "flex",
+                                                alignItems: "center",
+                                                width: "100%",
+                                                backgroundColor: "inherit",
+                                                mb: 3,
+                                            }}
+                                            elevation={0}
+                                        >
+                                            <Typography
+                                                variant="body2"
+                                                sx={{ color: "white", mr: 1 }}
+                                            >
+                                                Examples:
+                                            </Typography>
+                                            <Button
+                                                variant="outlined"
+                                                onClick={() => handleExampleClick("1a8t")}
+                                                sx={{ color: "white", borderColor: "white", mr: 2 }}
+                                            >
+                                                1A8T
+                                            </Button>
+                                            <Button
+                                                variant="outlined"
+                                                onClick={() => handleExampleClick("1CRN")}
+                                                sx={{ color: "white", borderColor: "white", mr: 2 }}
+                                            >
+                                                1CRN
+                                            </Button>
+                                            <Button
+                                                variant="outlined"
+                                                onClick={() => handleExampleClick("1A2B")}
+                                                sx={{ color: "white", borderColor: "white" }}
+                                            >
+                                                1A2B
+                                            </Button>
+                                        </Paper>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div></div>
 
-        <div class="container">
-          <div class="row mt-4">
-            <div
-              class="col-md-6"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-              }}
-            >
-              <p>
-                <h2>Binding sites database</h2>
-              </p>
-              <p>
-                BENDER DB is a comprehensive database containing protein binding
-                sites for proteomes of neglected disease pathogens.
-              </p>
-              <p>
-                The database includes 10 proteomes, encompassing 101,813
-                proteins and 1,172,743 binding sites.
-              </p>
-              <p>
-                The{" "}
-                <Link
-                  to={"/datatable"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <a>Available Data page</a>
-                </Link>{" "}
-                provides a complete list of all proteomes and available binding
-                sites in BENDER DB.
-              </p>
             </div>
-            <div class="col-md-6">
-              <div class="bordered">
-                <img
-                  src="img/ngl_home2.png"
-                  className="img-fluid"
-                  style={{
-                    maxWidth: "100%",
-                    maxHeight: "320px",
-                    width: "auto",
-                    height: "auto",
-                  }}
-                  alt="ngl"
-                />
-              </div>
-            </div>
-          </div>
-          <hr />
-          <div class="row mb">
-            <div class="col-md-6">
-              <div class="bordered">
-                <img src="img/bender_home.png" class=" img-fluid" />
-              </div>
-            </div>
-            <div
-              class="col-md-6"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-              }}
-            >
-              <p>
-                <h2>BENDER DB design</h2>
-              </p>
+            <div class="container">
+                {/* SECTION 1 — About GNN-GRaSP */}
+                <div class="row mt-4">
+                    <div
+                        class="col-md-6"
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <p>
+                            <h2>Protein Binding Site Prediction</h2>
+                        </p>
+                        <p>
+                            <strong>GNN-GRaSP</strong> is a graph-based deep learning framework
+                            designed to identify ligand-binding residues in protein structures.
+                        </p>
+                        <p>
+                            The method models each protein as a graph, where residues are nodes and
+                            non-covalent interactions define the edges. It uses <b>Graph Neural
+                                Networks (GNNs)</b> combined with a hierarchical learning strategy to
+                            enhance detection of binding regions, especially under severe class
+                            imbalance.
+                        </p>
+                        <p>
+                            The predictor leverages the <b>CLARA framework</b>, which integrates
+                            subgraph decomposition and coarse-to-fine learning to focus the model on
+                            structurally relevant regions of the protein.
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="bordered">
+                            <img
+                                src="img/ngl_home2.png"
+                                className="img-fluid"
+                                style={{
+                                    maxWidth: "100%",
+                                    maxHeight: "320px",
+                                    width: "auto",
+                                    height: "auto",
+                                }}
+                                alt="Protein structure viewer"
+                            />
+                        </div>
+                    </div>
+                </div>
 
-              <p>
-                Proteomes related to neglected disease pathogens, as listed by{" "}
-                <a
-                  className="text-decoration-none"
-                  href="https://www.who.int/health-topics/neglected-tropical-diseases#tab=tab_1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  WHO
-                </a>{" "}
-                and{" "}
-                <a
-                  className="text-decoration-none"
-                  href="https://www.paho.org/en/topics/neglected-tropical-and-vector-borne-diseases"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  PAHO
-                </a>
-                , were collected from the AlphaFold database.
-              </p>
-              <p>
-                Five different predictors were used to identify binding sites in
-                each protein structure.
-              </p>
+                <hr />
 
-              <p>
-                BENDER AI, an artificial intelligence model, was designed to
-                identify binding sites in proteins by integrating the outputs of
-                these established predictors.
-              </p>
+                {/* SECTION 2 — Framework Overview */}
+                <div class="row mb">
+                    <div class="col-md-6">
+                        <div class="bordered">
+                            <img src="img/hierarchical.png" class=" img-fluid" alt="Framework design" />
+                        </div>
+                    </div>
+                    <div
+                        class="col-md-6"
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <p>
+                            <h2>Hierarchical Graph Framework</h2>
+                        </p>
+                        <p>
+                            GNN-GRaSP employs a <b>two-stage hierarchical model</b> based on CLARA:
+                            (i) a <b>subgraph-level classifier</b> identifies regions likely to
+                            contain binding residues, and (ii) a <b>node-level classifier</b> refines
+                            predictions within those subgraphs.
+                        </p>
+                        <p>
+                            Subgraphs can be generated through <b>randomized coverage</b> or guided
+                            by <b>solvent-accessibility heuristics</b>, prioritizing surface regions
+                            where ligand interactions are more likely.
+                        </p>
+                        <p>
+                            This hierarchical design improves prediction precision, reduces noise
+                            from non-binding regions, and provides interpretable residue-level
+                            outputs across different protein structures.
+                        </p>
+                    </div>
+                </div>
 
-              <p>
-                A web server was created to make the results accessible to the
-                entire community.
-              </p>
+                <hr />
+
+                {/* SECTION 3 — Results and Visualization */}
+                <div class="row mt-1">
+                    <div
+                        class="col-md-6"
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                        }}
+                    >
+                        <br />
+                        <br />
+                        <h2 style={{ marginBottom: "25px" }}>Results and Visualization</h2>
+                        <p>
+                            GNN-GRaSP achieved <b>state-of-the-art performance</b> on the COACH100
+                            benchmark, surpassing existing predictors such as PUResNet and GRaSP,
+                            with an MCC of <b>0.674</b> and an F1-score of <b>68.6%</b>.
+                        </p>
+                        <p>
+                            The integrated molecular viewer allows users to explore predicted
+                            binding residues directly on the protein structure, highlighting
+                            high-confidence binding regions in warm colors and non-binding areas in
+                            cooler tones.
+                        </p>
+                        <p>
+                            Interactive plots, such as the UpSet view, provide insight into how
+                            predictions overlap across subgraphs and classifiers, supporting both
+                            visual interpretation and comparative analysis.
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="bordered">
+                            <img
+                                src="img/visu.png"
+                                className="img-fluid"
+                                style={{
+                                    maxWidth: "100%",
+                                    maxHeight: "500px",
+                                    width: "auto",
+                                    height: "auto",
+                                }}
+                                alt="Visualization of predictions"
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <hr />
-          <div class="row mt-1">
-            <div
-              class="col-md-6"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
-              <br />
-              <br />
-              <h2 style={{ marginBottom: "25px" }}>Data visualization</h2>
-              <p>
-                The molecule viewer allows the analysis of binding site residues
-                identified by predictors within the protein structure. It shows
-                the consensus of sites predicted by all tools with warm colors
-                for regions of the highest agreement and cold colors for regions
-                where no sites were found, or agreement is low.
-              </p>
-              <p>
-                The UpSet plot offers a flexible way to view the convergence of
-                results across all combinations of binding site predictions. It
-                allows users to select and display any combination of predictors
-                results in the molecule viewer.
-              </p>
-            </div>
-            <div class="col-md-6">
-              <div class="bordered">
-                <img
-                  src="img/upset_home.png"
-                  className="img-fluid"
-                  style={{
-                    maxWidth: "100%",
-                    maxHeight: "500px",
-                    width: "auto",
-                    height: "auto",
-                  }}
-                  alt="Example"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-      </BaseLayout>
-    </>
-  );
+        </BaseLayout>
+    );
 };
+
 export default Home;

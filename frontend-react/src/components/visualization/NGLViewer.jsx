@@ -73,12 +73,8 @@ export default function NGLViewer(props) {
   const [open, setOpen] = useState(false);
 
   function setViewerTabs() {
-    if (props.type === "summary") {
-      return <ViewerTabsSummary />;
-    } else if (props.type === "predictors") {
+    if (props.type === "predictors") {
       return <ViewerTabsPredictors />;
-    } else if (props.type === "popup") {
-      return <ViewerTabsPopup />;
     } else {
       return null; // Or handle other cases
     }
@@ -93,22 +89,15 @@ export default function NGLViewer(props) {
   }
 
   function resetNGLViewer(stage, tabIndex) {
-    if (props.type === "summary") {
-      resetNGLViewerSummary(stage, tabIndex);
-    } else if (props.type === "predictors") {
+    if (props.type === "predictors") {
       resetNGLViewerPredictors(stage, tabIndex);
-    } else if (props.type === "popup") {
-      resetNGLViewerPopup(stage);
     }
   }
 
   function handleDownloadPymol(protName) {
-    if (props.type === "summary") {
-      handleDownloadPymolSummary(protName);
-    } else if (props.type === "predictors") {
+    if (props.type === "predictors") {
       handleDownloadPymolPredictors(protName);
-    } else if (props.type === "popup") {
-    }
+    } 
   }
 
   function generateBindSiteStringSummary(bindSiteList) {
@@ -203,16 +192,6 @@ export default function NGLViewer(props) {
       changeColorBindSitesPopup(component, props.p2rankSites[0], "pink");
   }
 
-  function handleDownloadPymolSummary(protName) {
-    const fileUrl = pymolDLUrl + props.pdbFolder + "/" + protName + "_pymol_session.zip";
-    const link = document.createElement("a");
-    link.href = fileUrl;
-    link.download = protName + "_pymol_session.zip";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-
   function handleDownloadPymolPredictors(protName) {
     const fileUrl = pymolDLUrl + props.pdbFolder + "/" + protName + "_" + props.pred + "_sites_pymol_session.zip";
     console.log(fileUrl)
@@ -224,56 +203,13 @@ export default function NGLViewer(props) {
     document.body.removeChild(link);
   }
 
-  function resetNGLViewerSummary(stage, tabIndex) {
-    resetParameters();
-    stage.removeAllComponents();
-
-    if (tabIndex === 0) {
-      stage
-        .loadFile(
-          pdbFilesPath + "/pdbs/" + props.pdbFolder + "/AF-" + props.pdb + "-F1-model_v4.pdb"
-        )
-        .then((component) => {
-          component.addRepresentation("cartoon", {
-            colorScheme: "bfactor",
-            colorScale: "RdYlBu", // Defines a color scale from red to blue
-            colorReverse: true, // Reverses the color scale to use blue for low bfactor values and red for high bfactor values
-          });
-          component.autoView();
-          //changeColorBindSites(component, props.upsetClickResidues)
-        });
-    } else {
-      const filteredData = props.consensusData.filter(
-        (p) =>
-          p[3] >=
-          (props.numPreds * props.maxConsensusPercent - tabIndex + 2) /
-          props.numPreds
-      );
-      stage
-        .loadFile(
-          pdbFilesPath + "/pdbs/" + props.pdbFolder + "/AF-" + props.pdb + "-F1-model_v4.pdb"
-        )
-        .then((component) => {
-          component.addRepresentation("cartoon", { color: "lightgrey" });
-          component.autoView();
-          changeColorBindSites(
-            component,
-            tabIndex === 1 ? props.aiPredictionData : filteredData,
-            "ball+stick"
-          );
-        });
-    }
-
-    stage.setParameters({ backgroundColor: "white" });
-    props.setStage(props.stage); // Remove previous components
-  }
 
   function resetNGLViewerPredictors(stage) {
     resetParameters();
     stage.removeAllComponents();
     stage
       .loadFile(
-        pdbFilesPath + "/pdbs/" + props.pdbFolder + "/AF-" + props.pdb + "-F1-model_v4.pdb"
+        pdbFilesPath + "/pdbs/output_" + props.pdbFolder + "/" + props.pdb + ".pdb"
       )
       .then((component) => {
         component.addRepresentation("cartoon", { color: "lightgrey" });
@@ -289,128 +225,6 @@ export default function NGLViewer(props) {
       resetNGLViewer(props.stage);
     }
   }, [[props.puresnetButton, props.graspButton, props.pointsiteButton]]);
-
-  function resetNGLViewerPopup(stage) {
-    resetParameters();
-    stage.removeAllComponents();
-    stage
-      .loadFile(
-        pdbFilesPath + "/pdbs/" + props.pdbFolder + "/AF-" + props.pdb + "-F1-model_v4.pdb"
-      )
-      .then((component) => {
-        component.addRepresentation("cartoon", { color: "lightgrey" });
-        component.autoView();
-        colorAllSitesPopup(component);
-        changeColorBindSitesPopup(
-          component,
-          props.upsetClickResidues,
-          bSiteColors[5]
-        );
-      });
-    stage.setParameters({ backgroundColor: "white" });
-    props.setStage(stage); // Remove previous components
-  }
-
-  function ViewerTabsSummary() {
-    return (
-      <Box
-        sx={{
-          borderBottom: 1,
-          borderColor: "divider",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <Tabs
-          value={props.tabIndex}
-          onChange={handleTabChange}
-          aria-label="basic tabs example"
-          variant="scrollable"
-          allowScrollButtonsMobile
-        >
-          <NoMaxWidthTooltip title="Predictors consensus">
-            <Tab
-              key={"consensus"}
-              sx={{
-                "&:hover": {
-                  color: "#1976d2",
-                  borderBottom: 2,
-                  borderColor: "#1976d2",
-                },
-              }}
-              label={"Consensus"}
-              {...a11yProps(0)}
-            />
-          </NoMaxWidthTooltip>
-          {props.aiPredictionData.length > 0 ? (
-            <NoMaxWidthTooltip title="Meta-predictor based on a machine learning strategy">
-              <Tab
-                key={"bender-ai"}
-                sx={{
-                  "&:hover": {
-                    color: "#1976d2",
-                    borderBottom: 2,
-                    borderColor: "#1976d2",
-                  },
-                }}
-                label={"BENDER AI"}
-                {...a11yProps(2)}
-              />
-            </NoMaxWidthTooltip>
-          ) : (
-            <NoMaxWidthTooltip title="BENDER AI did not predict any binding site residue for this protein">
-              <Box>
-                <Tab
-                  key={"bender-ai"}
-                  sx={{
-                    "&:hover": {
-                      color: "#1976d2",
-                      borderBottom: 2,
-                      borderColor: "#1976d2",
-                    },
-                  }}
-                  label="BENDER AI"
-                  {...a11yProps(2)}
-                  disabled
-                />
-              </Box>
-            </NoMaxWidthTooltip>
-          )}
-
-          {[...Array(props.numPreds * props.maxConsensusPercent)].map(
-            (_, i) => (
-              <NoMaxWidthTooltip title={`Predictors convergence in at least ${Math.floor(
-                ((props.numPreds * props.maxConsensusPercent - i) /
-                  props.numPreds) *
-                100
-              )}% of results`}>
-              <Tab
-                key={`${Math.floor(
-                  ((props.numPreds * props.maxConsensusPercent - i) /
-                    props.numPreds) *
-                  100
-                )}%`}
-                sx={{
-                  "&:hover": {
-                    color: "#1976d2",
-                    borderBottom: 2,
-                    borderColor: "#1976d2",
-                  },
-                }}
-                label={`${Math.floor(
-                  ((props.numPreds * props.maxConsensusPercent - i) /
-                    props.numPreds) *
-                  100
-                )}%`}
-                {...a11yProps(i + 2)}
-              />
-              </NoMaxWidthTooltip>
-            )
-          )}
-        </Tabs>
-      </Box>
-    );
-  }
 
   function ViewerTabsPredictors() {
     return (
@@ -436,7 +250,7 @@ export default function NGLViewer(props) {
                   color={props.bSiteColors[i % props.bSiteColors.length]}
                   hoverColor="grey"
                 >
-                  Site {i}
+                  Cluster {i}
                 </ColorfulText>
               }
               {...a11yProps(i)}
@@ -447,28 +261,6 @@ export default function NGLViewer(props) {
     );
   }
 
-  function ViewerTabsPopup() {
-    return (
-      <Box
-        sx={{
-          borderBottom: 1,
-          borderColor: "divider",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <Tabs
-          aria-label="basic tabs example"
-          variant="scrollable"
-          allowScrollButtonsMobile
-          scrollButtons="auto"
-          value={0}
-        >
-          <Tab label={"Intersection"} {...a11yProps(0)} />
-        </Tabs>
-      </Box>
-    );
-  }
 
   function handleBackgroundColor(stage, color) {
     setBGroundColor(color);
@@ -476,7 +268,7 @@ export default function NGLViewer(props) {
   }
 
   function handleRepresentation(stage, repr, tabIndex) {
-    const current_pdb = "AF-" + props.pdb + "-F1-model_v4.pdb";
+    const current_pdb = props.pdb + ".pdb";
     setProtReprButton(repr);
     if (repr === "surface") {
       stage.getRepresentationsByName("cartoon").dispose();
@@ -510,15 +302,7 @@ export default function NGLViewer(props) {
     } else if (repr === "licorice") {
       stage.getRepresentationsByName("cartoon").dispose();
       stage.getRepresentationsByName("surface").dispose();
-      if (tabIndex === 0) {
-        stage.getComponentsByName(current_pdb).addRepresentation(repr, {
-          colorScheme: "bfactor",
-          colorScale: "RdYlBu", // Defines a color scale from red to blue
-          colorReverse: true, // Reverses the color scale to use blue for low bfactor values and red for high bfactor values
-        });
-      } else {
-        stage.getComponentsByName(current_pdb).addRepresentation(repr);
-      }
+      stage.getComponentsByName(current_pdb).addRepresentation(repr, { color: "lightgrey" });
     } else if (repr === "surface+cartoon") {
       stage.getRepresentationsByName("surface").dispose();
       stage.getRepresentationsByName("licorice").dispose();
@@ -545,7 +329,7 @@ export default function NGLViewer(props) {
   function handleBSiteRepresentation(stage, repr, tabIndex) {
     if (tabIndex === 0) return;
     setSiteProtReprButton(repr);
-    const current_pdb = "AF-" + props.pdb + "-F1-model_v4.pdb";
+    const current_pdb = props.pdb + ".pdb";
     const filteredData = props.consensusData.filter(
       (p) => p[3] >= (props.numPreds - tabIndex + 1) / props.numPreds
     );
@@ -643,8 +427,7 @@ export default function NGLViewer(props) {
 
           </Stack>
           <Typography color="text.secondary" variant="body2">
-            {props.pdb} protein structure along with highlighted binding site
-            residues
+            Protein structure along with highlighted binding site residues
           </Typography>
         </Box>
 

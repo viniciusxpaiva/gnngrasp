@@ -38,9 +38,9 @@ class Pipeline:
         self.prediction_params = prediction_params
         self.use_node_properties = prediction_params["use_embd_projection"]
         self.dirs = self._define_directories(output_dir)
-        os.makedirs(self.dirs["output"]["base"], exist_ok=True)
+        #os.makedirs(self.dirs["output"]["base"], exist_ok=True)
 
-        print(f"Saving resuls in: {self.dirs["output"]["base"].split("/")[-1]}")
+        print(f"Saving resuls in: {output_dir}")
 
         # Initialize embedding generators
         # self.template_extractor = EmbedTemplateExtractor(self.dirs)
@@ -48,159 +48,14 @@ class Pipeline:
         # Templates
         # self.embd_templates_extractor = EmbedTemplateExtractor(self.dirs)
 
-    def baseline_prediction(self, params, dataset_name):
-        """
-        Full baseline pipeline across all target classes.
-
-        Workflow:
-        1) Prepare dataset (train/test subgraphs).
-        2) For each class (one-vs-rest):
-        - Generate binary dataset for that class.
-        - Train + evaluate the subgraph classifier (GNN1) on TEST.
-        - Train + evaluate the node classifier (GNN2) on TEST
-            (with or without GNN1 context, per `use_subgraph_classifier` + fusion_mode).
-        - Store both sets of metrics for later aggregation.
-        3) Print and return average performance across all classes for BOTH models.
-        """
-
-        from app.baseline_prediction import BaselinePrediction
-
-        # --- Step 0: Prepare output folder for results ---
-        # Hardcoded here to "Test" (keep consistent with your current setup)
-        self._prepare_output_dir("Test")
-
-        # Initialize the pipeline object with configuration and directories
-        self.prediction_pipeline = BaselinePrediction(self.dirs, params)
-
-        # --- Step 1: Load dataset & prepare subgraphs ---
-        # Returns the number of classes for the chosen dataset
-        num_classes = self.prediction_pipeline.prepare_dataset(dataset_name)
-
-        # Storage for NODE-level metrics across all target classes (GNN2)
-        all_node_metrics = {
-            "accuracy": [],
-            "balanced_accuracy": [],
-            "precision": [],
-            "recall": [],
-            "f1": [],
-            "macro_f1": [],
-            "mcc": [],
-            "roc_auc": [],
-            "pr_auc": [],
-        }
-
-        # Storage for SUBGRAPH-level metrics across all target classes (GNN1)
-        all_subgraph_metrics = {
-            "accuracy": [],
-            "balanced_accuracy": [],
-            "precision": [],
-            "recall": [],
-            "f1": [],
-            "mcc": [],
-            "roc_auc": [],  # may be None when only one class is present in the split
-            "pr_auc": [],  # idem
-        }
-
-        use_gnn1 = params["use_subgraph_classifier"]
-
-        # --- Step 2: Loop over all classes (One-vs-Rest setting) ---
-        for target_class in range(num_classes):
-            print(f"[***] Evaluating for target class: {target_class} ***")
-
-            # 2.1) Build binary subgraph dataset for this class (positives = target_class)
-            self.prediction_pipeline.generate_binary_dataset_for_class(
-                target_class, params.get("subg_gen_method", "color")
-            )
-
-            if use_gnn1:
-                # ---------------------------------------------------------------------
-                # 2.2) SUBGRAPH classifier (GNN1): train + evaluate (always do it here)
-                # ---------------------------------------------------------------------
-
-                self.prediction_pipeline.initialize_subgraph_classifier()
-                # New trainer (with pos_weight, warmup/cosine, clipping, optional F1-threshold calib on val)
-                self.prediction_pipeline.train_subgraph_classifier()
-
-                # Evaluate ONLY GNN1 on the TEST split (no node model involved)
-                subg_metrics = (
-                    self.prediction_pipeline.evaluate_subgraph_classifier_on_test()
-                )
-
-                # Accumulate subgraph metrics (convert None -> NaN so we can np.nanmean later)
-                for k in all_subgraph_metrics.keys():
-                    v = subg_metrics.get(k, None)
-                    all_subgraph_metrics[k].append(np.nan if v is None else float(v))
-
-                # ---------------------------------------------------------------------
-                # 2.3) NODE classifier (GNN2): train + evaluate
-                #      - if params["use_subgraph_classifier"] is True and fusion_mode != "none",
-                #        GNN2 will consume GNN1 context internally in your pipeline.
-                #      - otherwise, it runs vanilla node classification.
-                # ---------------------------------------------------------------------
-                self.prediction_pipeline.initialize_node_classifier()
-                self.prediction_pipeline.train_node_classifier()
-                node_metrics = (
-                    self.prediction_pipeline.evaluate_node_classifier_on_test_filter()
-                )
-
-            else:
-                self.prediction_pipeline.initialize_node_classifier()
-                self.prediction_pipeline.train_node_classifier_old_no_context()
-                node_metrics = (
-                    self.prediction_pipeline.evaluate_node_classifier_on_test()
-                )
-
-            for k in all_node_metrics.keys():
-                all_node_metrics[k].append(float(node_metrics[k]))
-
-        # --- Step 3: Average across classes (THIS run) ---
-
-        # GNN2 (node-level) summary
-        node_run_summary = {
-            key: float(np.mean(vals)) if len(vals) > 0 else 0.0
-            for key, vals in all_node_metrics.items()
-        }
-
-        # GNN1 (subgraph-level) summary
-        # Use nanmean to ignore NaNs coming from AUCs that may be undefined in some classes.
-        subg_run_summary = {
-            key: float(np.nanmean(vals)) if len(vals) > 0 else 0.0
-            for key, vals in all_subgraph_metrics.items()
-        }
-
-        # --- Step 4: Pretty print summaries ---
-        print("\n[✓] Average SUBGRAPH metrics across all classes (this run):")
-        for key, mean_val in subg_run_summary.items():
-            if key in {"accuracy", "balanced_accuracy", "precision", "recall", "f1"}:
-                print(f" - {key.replace('_', ' ').title():<18}: {mean_val*100:5.2f}")
-            else:
-                # mcc / aucs are in [0..1] or [-1..1] but we keep raw for readability
-                print(f" - {key.replace('_', ' ').upper():<18}: {mean_val:5.4f}")
-
-        print("\n[✓] Average NODE metrics across all classes (this run):")
-        for key, mean_val in node_run_summary.items():
-            if key in {"accuracy", "balanced_accuracy", "precision", "recall", "f1"}:
-                print(f" - {key.replace('_', ' ').title():<18}: {mean_val*100:5.2f}")
-            else:
-                # mcc / aucs are in [0..1] or [-1..1] but we keep raw for readability
-                print(f" - {key.replace('_', ' ').upper():<18}: {mean_val:5.4f}")
-
-        # --- Step 5: Return both summaries (and the raw per-class if you want to persist) ---
-        return {
-            "subgraph_summary": subg_run_summary,
-            "node_summary": node_run_summary,
-            "per_class_subgraph": all_subgraph_metrics,
-            "per_class_node": all_node_metrics,
-        }
-
-    def hier_prediction(self, prot_id, chain_id, input_protein_path, params):
+    def hier_prediction(self, prot_id, input_prot_path, params):
 
         from app.hier_prediction import HierPrediction
 
         # Step 1: Load and validate the input protein structure
         print("[!] Preparing input protein data")
-        input_protein = Protein(prot_id, input_protein_path, chain_id)
-        self._prepare_output_dir(prot_id, chain_id)
+        input_protein = Protein(prot_id, input_prot_path, "A")
+        #self._prepare_output_dir(prot_id, "A")
         input_protein.save_fasta(self.dirs["output"]["prot_out_dir"])
 
         if not input_protein.is_valid:
@@ -230,10 +85,12 @@ class Pipeline:
 
         self.prediction_pipeline = HierPrediction(self.dirs, params)
         self.prediction_pipeline.prepare_dataset(input_protein)
+        print("AQUI")
 
         if params["use_subgraph_classifier"]:
             self.prediction_pipeline.initialize_subgraph_classifier()
             self.prediction_pipeline.train_subgraph_classifier()
+            
 
         self.prediction_pipeline.initialize_node_classifier()
         self.prediction_pipeline.train_node_classifier()
@@ -241,308 +98,11 @@ class Pipeline:
         residue_scores = self.prediction_pipeline.predict_binding_sites(input_subgraphs)
 
         all_residues = sorted(set().union(*[g.ego_nodes for g in input_subgraphs]))
+        
+        print("Salvando predições")
         self._save_binding_site_predictions(
-            residue_scores, prot_id, chain_id, all_residues
+            residue_scores, prot_id, "A", all_residues
         )
-
-    def smote_prediction(
-        self,
-        prot_id,
-        chain_id,
-        input_protein_path,
-    ):
-        """
-        Full Deep-GRaSP prediction pipeline using an ensemble-based interface.
-        This includes both training and prediction steps.
-
-        Pipeline steps:
-            1. Load and validate the input protein
-            2. Generate node/edge embeddings and features
-            3. Select templates based on similarity
-            4. Run Optuna to optimize GNN hyperparameters
-            5. Initialize and train one or more GNN models
-            6. Predict binding sites for the input protein
-            7. Save predictions to a CSV file
-
-        Args:
-            prot_id (str): PDB ID of the input protein (e.g., "1abc").
-            chain_id (str): Chain ID to be analyzed (e.g., "A").
-            input_protein_path (str): Path to the input PDB file.
-            epochs (int): Number of training epochs for each model.
-        """
-
-        from app.smote_prediction import SmotePrediction
-
-        # Step 1: Load and validate the input protein structure
-        print("[!] Preparing input protein data")
-        input_protein = Protein(prot_id, input_protein_path, chain_id)
-        self._prepare_output_dir(prot_id, chain_id)
-        input_protein.save_fasta(self.dirs["output"]["prot_out_dir"])
-
-        if not input_protein.is_valid:
-            raise ValueError(
-                f"[ERROR] Input protein {prot_id} is invalid (empty sequence or structure)"
-            )
-
-        # Step 2: Generate node embeddings and handcrafted edge properties for input protein
-        self._generate_input_node_embeddings(input_protein)
-        if self.use_node_properties:
-            self._generate_input_node_properties(input_protein)
-        self._generate_input_edge_features(input_protein)
-
-        # Step 3: Prepare dataset using top-N similar templates
-        self.prediction_pipeline = SmotePrediction(self.dirs, self.prediction_params)
-
-        self.prediction_pipeline.prepare_dataset_smote(input_protein)
-        # self.prediction_pipeline.prepare_input_smote(input_protein)
-
-        # Step 4 & 5: Train GNN
-        self.prediction_pipeline.initialize_gnn()
-
-        self.prediction_pipeline.train_gnn()
-
-        # Step 6: Predict binding sites using trained model(s)
-        prediction_df = self.prediction_pipeline.predict_gnn(input_protein)
-        # Step 7: Save prediction output
-        self._save_prediction_to_csv(prediction_df, prot_id, chain_id)
-
-    def nodeimport_prediction(
-        self,
-        prot_id,
-        chain_id,
-        input_protein_path,
-    ):
-        """
-        Full Deep-GRaSP prediction pipeline using an ensemble-based interface.
-        This includes both training and prediction steps.
-
-        Pipeline steps:
-            1. Load and validate the input protein
-            2. Generate node/edge embeddings and features
-            3. Select templates based on similarity
-            4. Run Optuna to optimize GNN hyperparameters
-            5. Initialize and train one or more GNN models
-            6. Predict binding sites for the input protein
-            7. Save predictions to a CSV file
-
-        Args:
-            prot_id (str): PDB ID of the input protein (e.g., "1abc").
-            chain_id (str): Chain ID to be analyzed (e.g., "A").
-            input_protein_path (str): Path to the input PDB file.
-            epochs (int): Number of training epochs for each model.
-        """
-
-        from app.nodeimport_prediction import NodeImportPrediction
-
-        # Step 1: Load and validate the input protein structure
-        print("[!] Preparing input protein data")
-        input_protein = Protein(prot_id, input_protein_path, chain_id)
-        self._prepare_output_dir(prot_id, chain_id)
-        input_protein.save_fasta(self.dirs["output"]["prot_out_dir"])
-
-        if not input_protein.is_valid:
-            raise ValueError(
-                f"[ERROR] Input protein {prot_id} is invalid (empty sequence or structure)"
-            )
-
-        # Step 2: Generate node embeddings and handcrafted edge properties for input protein
-        self._generate_input_node_embeddings(input_protein)
-        if self.use_node_properties:
-            self._generate_input_node_properties(input_protein)
-        self._generate_input_edge_features(input_protein)
-
-        # Step 3: Prepare dataset using top-N similar templates
-        self.prediction_pipeline = NodeImportPrediction(
-            self.dirs, self.prediction_params
-        )
-
-        self.prediction_pipeline.prepare_dataset_nodeimport(input_protein)
-
-        # self.prediction_pipeline.prepare_input_smote(input_protein)
-
-        # Step 4 & 5: Train GNN
-        self.prediction_pipeline.initialize_gnn()
-
-        self.prediction_pipeline.train_gnn()
-
-        # Step 6: Predict binding sites using trained model(s)
-        prediction_df = self.prediction_pipeline.predict_gnn(input_protein)
-        # Step 7: Save prediction output
-        self._save_prediction_to_csv(prediction_df, prot_id, chain_id)
-
-    def prediction(
-        self,
-        prot_id,
-        chain_id,
-        input_protein_path,
-    ):
-        """
-        Full Deep-GRaSP prediction pipeline using an ensemble-based interface.
-        This includes both training and prediction steps.
-
-        Pipeline steps:
-            1. Load and validate the input protein
-            2. Generate node/edge embeddings and features
-            3. Select templates based on similarity
-            4. Run Optuna to optimize GNN hyperparameters
-            5. Initialize and train one or more GNN models
-            6. Predict binding sites for the input protein
-            7. Save predictions to a CSV file
-
-        Args:
-            prot_id (str): PDB ID of the input protein (e.g., "1abc").
-            chain_id (str): Chain ID to be analyzed (e.g., "A").
-            input_protein_path (str): Path to the input PDB file.
-            epochs (int): Number of training epochs for each model.
-        """
-
-        from app.prediction import Prediction
-
-        # Step 1: Load and validate the input protein structure
-        print("[!] Preparing input protein data")
-        input_protein = Protein(prot_id, input_protein_path, chain_id)
-        self._prepare_output_dir(prot_id, chain_id)
-        input_protein.save_fasta(self.dirs["output"]["prot_out_dir"])
-
-        if not input_protein.is_valid:
-            raise ValueError(
-                f"[ERROR] Input protein {prot_id} is invalid (empty sequence or structure)"
-            )
-
-        # Step 2: Generate node embeddings and handcrafted edge properties for input protein
-        self._generate_input_node_embeddings(input_protein)
-        if self.use_node_properties:
-            self._generate_input_node_properties(input_protein)
-        self._generate_input_edge_features(input_protein)
-
-        # Step 3: Prepare dataset using top-N similar templates
-        self.prediction_pipeline = Prediction(self.dirs, self.prediction_params)
-        self.prediction_pipeline.prepare_dataset(input_protein)
-
-        # Step 4 & 5: Train GNN
-        self.prediction_pipeline.initialize_model()
-        self.prediction_pipeline.train_model()
-
-        # Step 6: Predict binding sites using trained model(s)
-        prediction_df = self.prediction_pipeline.predict_binding_sites(input_protein)
-        # Step 7: Save prediction output
-        self._save_prediction_to_csv(prediction_df, prot_id, chain_id)
-
-    def prediction_gnn(
-        self,
-        prot_id,
-        chain_id,
-        input_protein_path,
-    ):
-        """
-        Full Deep-GRaSP prediction pipeline using an ensemble-based interface.
-        This includes both training and prediction steps.
-
-        Pipeline steps:
-            1. Load and validate the input protein
-            2. Generate node/edge embeddings and features
-            3. Select templates based on similarity
-            4. Run Optuna to optimize GNN hyperparameters
-            5. Initialize and train one or more GNN models
-            6. Predict binding sites for the input protein
-            7. Save predictions to a CSV file
-
-        Args:
-            prot_id (str): PDB ID of the input protein (e.g., "1abc").
-            chain_id (str): Chain ID to be analyzed (e.g., "A").
-            input_protein_path (str): Path to the input PDB file.
-            epochs (int): Number of training epochs for each model.
-        """
-
-        from app.prediction import Prediction
-
-        # Step 1: Load and validate the input protein structure
-        print("[!] Preparing input protein data")
-        input_protein = Protein(prot_id, input_protein_path, chain_id)
-        self._prepare_output_dir(prot_id, chain_id)
-        input_protein.save_fasta(self.dirs["output"]["prot_out_dir"])
-
-        if not input_protein.is_valid:
-            raise ValueError(
-                f"[ERROR] Input protein {prot_id} is invalid (empty sequence or structure)"
-            )
-
-        # Step 2: Generate node embeddings and handcrafted edge properties for input protein
-        self._generate_input_node_embeddings(input_protein)
-        if self.use_node_properties:
-            self._generate_input_node_properties(input_protein)
-        self._generate_input_edge_features(input_protein)
-
-        # Step 3: Prepare dataset using top-N similar templates
-        self.prediction_pipeline = Prediction(self.dirs, self.prediction_params)
-        self.prediction_pipeline.prepare_dataset(input_protein)
-
-        # Step 4 & 5: Train GNN
-        self.prediction_pipeline.initialize_gnn()
-        self.prediction_pipeline.train_gnn()
-
-        # Step 6: Predict binding sites using trained model(s)
-        prediction_df = self.prediction_pipeline.predict_gnn(input_protein)
-        # Step 7: Save prediction output
-        self._save_prediction_to_csv(prediction_df, prot_id, chain_id)
-
-    def bat_prediction(
-        self,
-        prot_id,
-        chain_id,
-        input_protein_path,
-    ):
-        """
-        Full Deep-GRaSP prediction pipeline using an ensemble-based interface.
-        This includes both training and prediction steps.
-
-        Pipeline steps:
-            1. Load and validate the input protein
-            2. Generate node/edge embeddings and features
-            3. Select templates based on similarity
-            4. Run Optuna to optimize GNN hyperparameters
-            5. Initialize and train one or more GNN models
-            6. Predict binding sites for the input protein
-            7. Save predictions to a CSV file
-
-        Args:
-            prot_id (str): PDB ID of the input protein (e.g., "1abc").
-            chain_id (str): Chain ID to be analyzed (e.g., "A").
-            input_protein_path (str): Path to the input PDB file.
-            epochs (int): Number of training epochs for each model.
-        """
-
-        from app.bat_prediction import BATPrediction
-
-        # Step 1: Load and validate the input protein structure
-        print("[!] Preparing input protein data")
-        input_protein = Protein(prot_id, input_protein_path, chain_id)
-        self._prepare_output_dir(prot_id, chain_id)
-        input_protein.save_fasta(self.dirs["output"]["prot_out_dir"])
-
-        if not input_protein.is_valid:
-            raise ValueError(
-                f"[ERROR] Input protein {prot_id} is invalid (empty sequence or structure)"
-            )
-
-        # Step 2: Generate node embeddings and handcrafted edge properties for input protein
-        self._generate_input_node_embeddings(input_protein)
-        if self.use_node_properties:
-            self._generate_input_node_properties(input_protein)
-        self._generate_input_edge_features(input_protein)
-
-        # Step 3: Prepare dataset using top-N similar templates
-        self.prediction_pipeline = BATPrediction(self.dirs, self.prediction_params)
-        self.prediction_pipeline.initialize_gnn()
-        self.prediction_pipeline.prepare_dataset(input_protein)
-
-        # Step 4 & 5: Train GNN
-        self.prediction_pipeline.train_gnn()
-
-        # Step 6: Predict binding sites using trained model(s)
-        prediction_df = self.prediction_pipeline.predict_gnn(input_protein)
-        # Step 7: Save prediction output
-        self._save_prediction_to_csv(prediction_df, prot_id, chain_id)
 
     #############################################################
     # Auxiliary Functions
@@ -596,12 +156,6 @@ class Pipeline:
                     "global_embeddings": os.path.join(
                         self.base_dir, "data", "esm_templates", "global_embeddings"
                     ),
-                    "coach100_node_embeddings": os.path.join(
-                        self.base_dir,
-                        "data",
-                        "esm_templates",
-                        "coach100_node_embeddings",
-                    ),
                 },
                 "pbert_templates": {
                     "base": os.path.join(self.base_dir, "data", "pbert_templates"),
@@ -623,18 +177,6 @@ class Pipeline:
                     "global_embeddings": os.path.join(
                         self.base_dir, "data", "prop_templates", "global_embeddings"
                     ),
-                    "coach100_edge_properties": os.path.join(
-                        self.base_dir,
-                        "data",
-                        "prop_templates",
-                        "coach100_edge_properties",
-                    ),
-                    "coach100_node_properties": os.path.join(
-                        self.base_dir,
-                        "data",
-                        "prop_templates",
-                        "coach100_node_properties",
-                    ),
                 },
                 "distance_templates": {
                     "base": os.path.join(self.base_dir, "data", "distance_templates"),
@@ -648,8 +190,7 @@ class Pipeline:
             },
             "scripts": os.path.join(self.base_dir, "scripts"),
             "output": {
-                "base": os.path.join(self.base_dir, output_dir + "_output"),
-                "prot_out_dir": None,
+                "prot_out_dir": output_dir,
             },
             "naccess": {
                 "binary": "/home/vinicius/naccess/naccess",
@@ -766,7 +307,7 @@ class Pipeline:
         """
         # Generate embeddings
 
-        input_csv_file = f"{self.dirs["data"]["esm_templates"]["coach100_node_embeddings"]}/{protein.pdb_id}_c100_node_embeddings.csv"
+        input_csv_file = f"{self.dirs["data"]["esm_templates"]["node_embeddings"]}/{protein.pdb_id}_node_embeddings.csv"
         if os.path.exists(input_csv_file):
             protein.node_embeddings = pd.read_csv(input_csv_file)
             print("[✓] Using existing CSV file for input protein node embeddings")
@@ -813,7 +354,7 @@ class Pipeline:
             save_csv (bool): If True, save the extracted properties to CSV.
         """
 
-        input_csv_file = f"{self.dirs["data"]["prop_templates"]["coach100_node_properties"]}/{protein.pdb_id}_c100_node_properties.csv"
+        input_csv_file = f"{self.dirs["data"]["prop_templates"]["node_properties"]}/{protein.pdb_id}_node_properties.csv"
         if os.path.exists(input_csv_file):
             protein.node_properties = pd.read_csv(input_csv_file)
             print("[✓] Using existing CSV file for input protein node properties ")
@@ -867,7 +408,7 @@ class Pipeline:
             protein (Protein): The input protein object to process.
         """
 
-        input_csv_file = f"{self.dirs["data"]["prop_templates"]["coach100_edge_properties"]}/{protein.pdb_id}_c100_edge_properties.csv"
+        input_csv_file = f"{self.dirs["data"]["prop_templates"]["edge_properties"]}/{protein.pdb_id}_edge_properties.csv"
         if os.path.exists(input_csv_file):
             protein.edge_properties = pd.read_csv(input_csv_file)
             print("[✓] Using existing CSV file for input protein edge properties ")
@@ -941,9 +482,10 @@ class Pipeline:
 
         # Compose output filename
 
-        output_filename = f"{prot_id}{chain_id}_prediction.csv"
-        output_path = os.path.join(self.dirs["output"]["prot_out_dir"], output_filename)
-
+        output_filename = f"{prot_id}_prediction.csv"
+        #output_path = os.path.join(self.dirs["output"]["prot_out_dir"], output_filename)
+        
+        output_path = self.dirs["output"]["prot_out_dir"] + "/" + output_filename
         # Save the DataFrame
         predictions_df.to_csv(output_path, index=False)
         return output_path
@@ -958,6 +500,6 @@ class Pipeline:
             chain_id (str): Chain ID of the input protein.
         """
         output_base = self.dirs["output"]["base"]
-        output_subdir = os.path.join(output_base, f"{prot_id}_{chain_id}")
-        os.makedirs(output_subdir, exist_ok=True)
-        self.dirs["output"]["prot_out_dir"] = output_subdir
+        #output_subdir = os.path.join(output_base, f"{prot_id}_{chain_id}")
+        #os.makedirs(output_subdir, exist_ok=True)
+        self.dirs["output"]["prot_out_dir"] = output_base

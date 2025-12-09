@@ -19,7 +19,7 @@ const Footer = () => {
           <MDBContainer className="pt-4">
             <section className="mb-3 text-dark">
               <div className="row">
-                <span>© 2024 Copyright BENDER DB</span>
+                <span>© 2025 Copyright GNN-GRaSP</span>
                 <a
                   className="text-decoration-none mt-2"
                   href="https://homepages.dcc.ufmg.br/~sabrinas"

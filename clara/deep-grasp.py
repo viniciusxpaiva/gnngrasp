@@ -24,17 +24,6 @@ if __name__ == "__main__":
 
     print("Starting Deep-GRaSP")
 
-    DPS_TEST = False
-
-    # TEST_TYPE = "coach/full_coach/"
-    #TEST_TYPE = "coach/coach100/"
-    # TEST_TYPE = "coach/teste/"
-    # TEST_TYPE = "coach/tmp2/"
-    TEST_TYPE = "../input/"
-
-    INPUT_PDB_DIR = f"/home/vinicius/Desktop/deep-grasp/experiments/{TEST_TYPE}"
-    DPS_TEST_FILE = "experiments/deepprosite/tmp_test.fa"
-
     PREDICTION_PARAMS = {
         "top_n_templates": 30,
         "sub_model": False,
@@ -114,165 +103,63 @@ if __name__ == "__main__":
 
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 
-    CREATE_TEMPLATES = False
-    COACH_TEST = True
+    pipeline = Pipeline(BASE_DIR, args.output_dir, PREDICTION_PARAMS)
+    # --- Step 1: List all PDB files in the folder ---
 
-    if PREDICTION_PARAMS["baseline"]:
-        # --- grade de parâmetros ---
-        GNN1_TYPES = ["GCN"]
-        GNN1_LAYERS = [1]
+    total_start_time = time.time()
+    per_protein_times = []
 
-        SG_NEIGHBORS = [5]
+    # --- Step 2: Run prediction for each PDB file ---
+    pdb_files = [
+        f for f in os.listdir(args.output_dir)
+        if f.lower().endswith(".pdb")
+    ]
+    if not pdb_files:
+        raise ValueError(f"No PDB files found in output_dir={args.output_dir}")
 
-        GNN2_TYPES = ["GCN"]
-        GNN2_LAYERS = [2]
+    pdb_file = pdb_files[0]
+    prot_id = os.path.splitext(pdb_file)[0]  # remove ".pdb"
 
-        POOL_TYPE = ["add"]
+    input_prot_path = os.path.join(args.output_dir, pdb_file)
+    csv_path = f"{args.output_dir}/{prot_id}_prediction.csv"
 
-        n_base_runs = 10
-        dataset_name = "PubMed"
+    if os.path.exists(csv_path):
+        pass
+        #continue
 
-        pipeline = Pipeline(BASE_DIR, args.output_dir, PREDICTION_PARAMS)
-        run_planetoid_grid_experiments(
-            pipeline,
+    print("--------------------------------------")
+    print(
+        f"Starting prediction for protein {prot_id}"
+    )
+    print("--------------------------------------")
+
+    protein_start_time = time.time()
+
+    if PREDICTION_PARAMS["hier"]:
+        print(
+            f"*** HIER PREDICTION | {HIER_PARAMS["subg_gen_method"].upper()} {HIER_PARAMS["asa_exposure_percent"]}% Subgraph ***"
+        )
+        pipeline.hier_prediction(
+            prot_id,
+            input_prot_path,
             HIER_PARAMS,
-            n_base_runs,
-            dataset_name,
-            GNN1_TYPES,
-            GNN1_LAYERS,
-            SG_NEIGHBORS,
-            GNN2_TYPES,
-            GNN2_LAYERS,
-            POOL_TYPE,
         )
 
-    if CREATE_TEMPLATES:
-        print(f"[0] Generating node, edge and global embeddings for templates")
-        print(
-            f"[0] Generating node and edge features and also global embeddings for templates"
-        )
-        dirs = {
-            "data": {
-                "distance_templates": {
-                    "base": os.path.join(BASE_DIR, "data", "distance_templates"),
-                    "edges": os.path.join(
-                        BASE_DIR, "data", "distance_templates", "edges"
-                    ),
-                    "neighbors6": os.path.join(
-                        BASE_DIR, "data", "distance_templates", "neighbors6"
-                    ),
-                },
-            },
-        }
-        extractor = EgoGraphTemplateExtractor(dirs)
-        extractor.generate_ego_graph_templates()
+    protein_elapsed = time.time() - protein_start_time
+    per_protein_times.append(protein_elapsed)
 
-    if COACH_TEST:
-        pipeline = Pipeline(BASE_DIR, args.output_dir, PREDICTION_PARAMS)
-        # --- Step 1: List all PDB files in the folder ---
+    print(
+        f"[✓] Finished prediction for {prot_id}({protein_elapsed:.2f} sec)\n"
+    )
+    total_elapsed = time.time() - total_start_time
+    minutes = total_elapsed // 60
+    seconds = total_elapsed % 60
 
-        pdb_files = [f for f in os.listdir(INPUT_PDB_DIR) if f.endswith(".pdb")]
+    print(
+        f"[✓] All predictions completed. Predictions saved at: {args.output_dir}"
+    )
+    print(f"[⏱️] Total prediction time: {int(minutes)} min {int(seconds)} sec.")
 
-        print(f"[+] Found {len(pdb_files)} PDB files to predict.")
-        total_start_time = time.time()
-        per_protein_times = []
-
-        # --- Step 2: Run prediction for each file ---
-        cont = 0
-        for pdb_file in pdb_files:
-            cont += 1
-            filename = os.path.splitext(pdb_file)[0]  # remove ".pdb"
-
-            if TEST_TYPE.startswith("casp10"):
-                prot_id = filename
-                chain_id = ""
-            else:
-                prot_id = filename[:-1]  # all except last character
-                chain_id = filename[-1]  # last character
-
-            input_protein_path = os.path.join(INPUT_PDB_DIR, pdb_file)
-
-            csv_path = f"{args.output_dir}_output/{prot_id}_{chain_id}/{prot_id}{chain_id}_prediction.csv"
-
-            if os.path.exists(csv_path):
-                pass
-                #continue
-
-            print("--------------------------------------")
-            print(
-                f"Starting prediction for protein {prot_id}{chain_id} | ({cont}|{len(pdb_files)})"
-            )
-            print("--------------------------------------")
-
-            protein_start_time = time.time()
-
-            if PREDICTION_PARAMS["hier"]:
-                print(
-                    f"*** HIER PREDICTION | {HIER_PARAMS["subg_gen_method"].upper()} {HIER_PARAMS["asa_exposure_percent"]}% Subgraph ***"
-                )
-                pipeline.hier_prediction(
-                    prot_id,
-                    chain_id,
-                    input_protein_path,
-                    HIER_PARAMS,
-                )
-            elif PREDICTION_PARAMS["sub_model"]:
-                print(
-                    f"*** {PREDICTION_PARAMS["embd_type"]} | SUB-MODEL EMBEDDINGS PREDICTION ***"
-                )
-                pipeline.prediction(
-                    prot_id,
-                    chain_id,
-                    input_protein_path,
-                )
-            elif PREDICTION_PARAMS["smote"]:
-                print(f"*** {PREDICTION_PARAMS["embd_type"]} | SMOTE PREDICTION ***")
-                pipeline.smote_prediction(
-                    prot_id,
-                    chain_id,
-                    input_protein_path,
-                )
-            elif PREDICTION_PARAMS["bat"]:
-                print(f"*** {PREDICTION_PARAMS["embd_type"]} | BAT PREDICTION ***")
-                pipeline.bat_prediction(
-                    prot_id,
-                    chain_id,
-                    input_protein_path,
-                )
-            elif PREDICTION_PARAMS["node_import"]:
-                print(
-                    f"*** {PREDICTION_PARAMS["embd_type"]} | NODE IMPORT PREDICTION ***"
-                )
-                pipeline.nodeimport_prediction(
-                    prot_id,
-                    chain_id,
-                    input_protein_path,
-                )
-            else:
-                print(
-                    f"*** {PREDICTION_PARAMS["embd_type"]} | GNN-ONLY EMBEDDINGS PREDICTION ***"
-                )
-                pipeline.prediction_gnn(
-                    prot_id,
-                    chain_id,
-                    input_protein_path,
-                )
-
-            protein_elapsed = time.time() - protein_start_time
-            per_protein_times.append(protein_elapsed)
-
-            print(
-                f"[✓] Finished prediction for {prot_id}{chain_id} ({protein_elapsed:.2f} sec)\n"
-            )
-        total_elapsed = time.time() - total_start_time
-        minutes = total_elapsed // 60
-        seconds = total_elapsed % 60
-
-        print(
-            f"[✓] All predictions completed. Predictions saved at: {args.output_dir}_output"
-        )
-        print(f"[⏱️] Total prediction time: {int(minutes)} min {int(seconds)} sec.")
-
-        if per_protein_times:
-            avg_time = sum(per_protein_times) / len(per_protein_times)
-            print(f"[⏱️] Average time per prediction: {avg_time:.2f} sec.")
+    if per_protein_times:
+        avg_time = sum(per_protein_times) / len(per_protein_times)
+        print(f"[⏱️] Average time per prediction: {avg_time:.2f} sec.")

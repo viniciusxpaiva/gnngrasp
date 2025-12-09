@@ -21,7 +21,7 @@ import Tooltip, { tooltipClasses } from '@mui/material/Tooltip';
 
 
 //const csvDLUrl = "https://benderdb.ufv.br/benderdb-data/results/"
-const csvDLUrl = process.env.PUBLIC_URL + "/results/"
+const csvDLUrl = process.env.PUBLIC_URL + "/pdbs/"
 
 const NoMaxWidthTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} arrow />
@@ -57,19 +57,16 @@ export default function ResiduesTabs(props) {
   const [previousFocusRes, setPreviousFocusRes] = useState("");
 
   function ContentTabs() {
-    if (props.type === "summary") {
-      return <ContentTabsSummary />;
-    } else if (props.type === "predictors") {
+    if (props.type === "predictors") {
       return <ContentTabsPredictors />;
-    } else if (props.type === "popup") {
-      return <ContentTabsPopup />; // Or handle other cases
     } else {
       return null;
     }
   }
 
   function handleDownloadResults(predictor, protName) {
-    const fileUrl = csvDLUrl + protName + "_" + predictor + "_results.csv";
+    //const fileUrl = csvDLUrl + protName + "_" + predictor + "_results.csv";
+    const fileUrl = "/pdbs/output_" + props.pdbFolder + "/" + props.pdb + "_prediction.csv"
     const link = document.createElement("a");
     link.href = fileUrl;
     link.download = protName + "_" + predictor + "_results.csv";
@@ -260,7 +257,7 @@ export default function ResiduesTabs(props) {
             alignItems="center"
           >
             <Typography gutterBottom variant="h5" component="div">
-              <span className="align-middle">{props.pred + " sites"}</span>
+              <span className="align-middle">{"Binding residues"}</span>
             </Typography>
             <NoMaxWidthTooltip title="Download results">
               <Button
@@ -346,79 +343,6 @@ export default function ResiduesTabs(props) {
     );
   }
 
-  function ContentTabsPopup() {
-    return (
-      <Card variant="outlined" sx={{ marginTop: { xs: 2, md: 0 } }}>
-        <Box sx={{ p: 2, height: 137 }}>
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Typography gutterBottom variant="h5" component="div">
-              Binding site residues
-            </Typography>
-          </Stack>
-          <Typography color="text.secondary" variant="body2">
-            Residues in the selected intersection are listed below.
-          </Typography>
-        </Box>
-        <Divider />
-        <Box sx={{ p: 0 }}>
-          <Box sx={{ width: "100%" }}>
-            <CustomTabPanel value={props.tabIndex} index={0}>
-              <TableContainer component={Paper} sx={{ height: 676 }}>
-                <Table stickyHeader aria-label="customized table" size="small">
-                  <TableHead>
-                    <TableRow>
-                      <StyledTableCell align="center">Residue</StyledTableCell>
-                      <StyledTableCell align="center">Number</StyledTableCell>
-                      <StyledTableCell align="center">Chain</StyledTableCell>
-                      <StyledTableCell align="center">Look at</StyledTableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {props.upsetClickResidues.map((res, i) => (
-                      <StyledTableRow key={i}>
-                        <StyledTableCell align="center">
-                          {res.split("-")[0]}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          {res.split("-")[1]}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          {res.split("-")[2]}
-                        </StyledTableCell>
-                        <StyledTableCell align="center">
-                          <NoMaxWidthTooltip title="Focus on this residue">
-                            <IconButton
-                              className="p-1"
-                              aria-label="focus-res"
-                              onClick={() =>
-                                focusResidue(
-                                  props.stage,
-                                  res.split("-")[1],
-                                  res.split("-")[2]
-                                )
-                              }
-                            >
-                              <RemoveRedEyeOutlinedIcon />
-                            </IconButton>
-                          </NoMaxWidthTooltip>
-
-                        </StyledTableCell>
-                      </StyledTableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </CustomTabPanel>
-          </Box>
-        </Box>
-      </Card>
-    );
-  }
-
   function focusResidue(stage, resNum, chain) {
     const sele = resNum + ":" + chain;
     if (previousFocusRes === sele) {
@@ -426,7 +350,7 @@ export default function ResiduesTabs(props) {
       setPreviousFocusRes("");
       return;
     }
-    const pdb_id = "input.pdb";
+    const pdb_id = props.pdb + ".pdb";
     //stage.getRepresentationsByName("surface").dispose();
     stage.getComponentsByName(pdb_id).addRepresentation("surface", {
       sele: sele,

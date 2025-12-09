@@ -47,39 +47,32 @@ export default function MolViewerPredictors(props) {
   }
 
   useEffect(() => {
+    if (!props.pdb || !props.pdbFolder) return;
+
     const newStage = new NGL.Stage("viewport");
     newStage.removeAllComponents(); // Remove previous components
     newStage
       .loadFile(
-        pdbFilesPath + "/pdbs/" + props.pdbFolder + "/input.pdb"
+        pdbFilesPath + "/pdbs/output_" + props.pdbFolder + "/" + props.pdb + ".pdb"
       )
       .then((component) => {
         component.addRepresentation("cartoon", { color: "lightgrey" });
         component.autoView();
         changeColorBindSitesPredictors(component, props.bindSites);
-      });
+      })
+      .catch((err) => console.error("Error loading PDB in NGL:", err));
     newStage.setParameters({ backgroundColor: "white" });
     setStagePredictors(newStage);
-  }, []);
+
+    return () => {
+      newStage.dispose();
+    };
+  }, [props.pdb, props.pdbFolder, props.bindSites]);
 
   return (
     <>
       {props.bindSites.length > 0 ? (
         <div className="row">
-          <Stack sx={{ marginBottom: 2 }} spacing={2}>
-            <Card
-              variant="outlined"
-              style={{ textAlign: 'center', justifyContent: 'center', border: 0, borderTop: 0, borderLeft: 0, borderRight: 0 }}
-            >
-              <Typography variant="body1">
-                Protein from <b>{props.pdbFolder.replace('_', ' ')}</b> organism
-              </Typography>
-              <Typography color="text.secondary" variant="body1" sx={{ marginTop: 1 }}>
-                {props.proteinFullName}
-              </Typography>
-            </Card>
-          </Stack>
-
           <NGLViewer
             type={"predictors"}
             pdb={props.pdb}

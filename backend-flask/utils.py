@@ -3,6 +3,9 @@ import os
 import glob
 from pathlib import Path
 import subprocess
+import sys
+from urllib.error import HTTPError, URLError
+from urllib.request import urlopen
 
 BACKEND_PATH = ''
 #BACKEND_PATH = '/var/www/benderdb/backend-flask/'
@@ -11,10 +14,52 @@ BENDERDB_DATA_PATH = '../frontend-react/public/'
 #BENDERDB_DATA_PATH = '/var/www/benderdb-data/'
 
 CONDA_ENV_NAME = "deep-grasp"                     # ex.: "deepgrasp"
-DEEP_GRASP_WORKDIR = "/home/vinicius/Desktop/deep-grasp/"  # pasta onde vive o deep-grasp.py
+DEEP_GRASP_WORKDIR = "/home/vinicius/Desktop/gnngrasp/clara"  # pasta onde vive o deep-grasp.py
 DEEP_GRASP_SCRIPT  = "deep-grasp.py"           # nome do script
 CSV_RELATIVE_PATH  = "saida-flask.csv"   # caminho padrão de saída relativo ao workdir ou ao -o
 
+
+
+
+class PdbNotFoundError(Exception):
+	'''Raised when a PDB code is not found on RCSB.'''
+	pass
+
+
+def download_pdb_from_rcsb(pdb_code: str, output_dir: Path) -> Path:
+	'''
+	Download a PDB file directly from RCSB into output_dir.
+	- pdb_code: e.g. "1A8T"
+	- output_dir: target directory where the PDB will be stored
+	Returns the saved file path.
+	'''
+	if not pdb_code:
+		raise ValueError('pdb_code is required')
+
+	output_dir = Path(output_dir)
+	output_dir.mkdir(parents=True, exist_ok=True)
+
+	pdb_code = pdb_code.lower()
+	url = f"https://files.rcsb.org/download/{pdb_code}.pdb"
+	dest_path = output_dir / f"{pdb_code}.pdb"
+
+	try:
+		with urlopen(url) as response:
+			if getattr(response, 'status', 200) == 404:
+				raise PdbNotFoundError(f'PDB code not found: {pdb_code}')
+			content = response.read()
+	except HTTPError as exc:
+		if exc.code == 404:
+			raise PdbNotFoundError(f'PDB code not found: {pdb_code}') from exc
+		raise
+	except URLError as exc:
+		raise RuntimeError(f'Network error while downloading PDB: {exc}') from exc
+
+	if not content:
+		raise RuntimeError(f'Empty content received for PDB code {pdb_code}')
+
+	dest_path.write_bytes(content)
+	return dest_path
 
 
 def get_prediction_results(input_file):
@@ -26,8 +71,8 @@ def get_prediction_results(input_file):
 	# transforma o residue_id no formato desejado
 	# exemplo: "TRP_32_A" → ['A', 'TRP', '32']
 	def split_residue(residue_id):
-	    resname, resnum, chain = residue_id.split("_")
-	    return [chain, resname, resnum]
+		resname, resnum, chain = residue_id.split("_")
+		return [chain, resname, resnum]
 
 	# aplica a função
 	residue_lists = [split_residue(rid) for rid in df_filtered["residue_id"]]
@@ -38,7 +83,7 @@ def get_prediction_results(input_file):
 	return result
 
 
-def run_deep_grasp(output_dir: Path, extra_args=None, timeout_sec=1800):
+def run_deep_grasp(pdb_code: str, output_dir: Path, extra_args=None, timeout_sec=1800):
     """
     Executa o pipeline via conda e retorna o caminho do CSV gerado.
     - output_dir: diretório de saída (será passado via -o)
@@ -57,6 +102,8 @@ def run_deep_grasp(output_dir: Path, extra_args=None, timeout_sec=1800):
         *extra_args
     ]
 
+
+
     # Executa no diretório do projeto
     proc = subprocess.run(
         cmd,
@@ -68,6 +115,14 @@ def run_deep_grasp(output_dir: Path, extra_args=None, timeout_sec=1800):
         env={**os.environ},  # herda env atual
     )
 
+    print("AQUI22222")
+
+    # Exibe stdout/stderr apenas se existirem (evita impressão de "stderr=").
+    if proc.stdout:
+        print(proc.stdout)
+    if proc.stderr:
+        print(proc.stderr, file=sys.stderr)
+
     if proc.returncode != 0:
         raise RuntimeError(
             f"deep-grasp falhou (code={proc.returncode}). "
@@ -76,7 +131,7 @@ def run_deep_grasp(output_dir: Path, extra_args=None, timeout_sec=1800):
 
     # CSV esperado: geralmente algo como <output_dir>/predictions.csv.
     # Se o script sempre escreve "predictions.csv" dentro do diretório passado em -o:
-    csv_path = Path(output_dir) / "predictions.csv"
+    csv_path = Path(output_dir) / f"{pdb_code}_prediction.csv"
     if not csv_path.exists():
         # fallback: se seu script escreve em outro lugar/caminho, ajuste aqui
         alt = Path(DEEP_GRASP_WORKDIR) / CSV_RELATIVE_PATH
@@ -87,8 +142,36 @@ def run_deep_grasp(output_dir: Path, extra_args=None, timeout_sec=1800):
                 f"CSV de saída não encontrado em {csv_path} nem em {alt}. "
                 f"STDOUT:\n{proc.stdout}\n\nSTDERR:\n{proc.stderr}"
             )
-
+    print(csv_path)
     return csv_path, proc.stdout  # devolve também logs se quiser inspecionar
+
+
+def start_deep_grasp_async(pdb_code: str, output_dir: Path, extra_args=None):
+    """
+    Dispara o deep-grasp em background e retorna o PID.
+    Logs são gravados em <output_dir>/deep_grasp.log.
+    """
+    extra_args = extra_args or []
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    log_path = Path(output_dir) / "deep_grasp.log"
+    log_file = open(log_path, "a")
+
+    cmd = [
+        "conda", "run", "-n", CONDA_ENV_NAME,
+        "python", DEEP_GRASP_SCRIPT,
+        "-o", str(output_dir),
+        *extra_args
+    ]
+
+    proc = subprocess.Popen(
+        cmd,
+        cwd=DEEP_GRASP_WORKDIR,
+        stdout=log_file,
+        stderr=log_file,
+        env={**os.environ},
+    )
+    return proc.pid
 
 
 def get_protein_full_name(prot_name, pdb_folder):
@@ -133,10 +216,16 @@ def format_bsite_string(bsite_string):
 
 
 def get_all_protein_residues(prot_name, prot_folder):
-	pdb_folder = BENDERDB_DATA_PATH + 'pdbs/' + prot_folder + '/'
-	#pdb_name = 'AF-' + prot_name.upper() + '-F1-model_v4.pdb'
-	protein_file = open(pdb_folder + prot_name + ".pdb", "r")
-	pdb_lines = protein_file.readlines()
+	folder_path = Path(prot_folder)
+	if not folder_path.exists():
+		folder_path = Path(BENDERDB_DATA_PATH) / 'pdbs' / str(prot_folder)
+
+	pdb_path = folder_path / f"{prot_name}.pdb"
+	if not pdb_path.exists():
+		raise FileNotFoundError(f"PDB file not found: {pdb_path}")
+
+	with pdb_path.open("r") as protein_file:
+		pdb_lines = protein_file.readlines()
 
 	residues_list = []
 

@@ -95,7 +95,7 @@ class HierPrediction:
         )
 
         # 4) Report and make loaders
-        print("[INFO] Split summary:")
+        print("[INFO] Split summary1:")
         self._report_split("train", train_set)
         self._report_split("val", val_set)
         if test_set:
@@ -135,9 +135,9 @@ class HierPrediction:
 
         # Run BLAST to find similar templates
         blast = BLAST(self.dirs["data"]["blast"])
-        selected_templates = blast.run(input_protein, top_n_templates)
+        #selected_templates = blast.run(input_protein, top_n_templates)
 
-        # selected_templates = {"1a8t_A"}
+        selected_templates = {"1a8t_A"}
 
         print(f"[!] Selected {len(selected_templates)} templates")
         subgraphs = []
@@ -1471,7 +1471,6 @@ class HierPrediction:
                         f"[INFO] Filtering kept 0 by threshold={thr_gnn1:.3f}; rescued top-{topk_if_empty} by prob."
                     )
                 else:
-                    print(T)
                     print(
                         f"[INFO] Filtering kept {num_keep}/{len(input_subgraphs)} (thr={thr_gnn1:.3f}, T={'none' if T is None else T})."
                     )
@@ -1790,8 +1789,8 @@ class HierPrediction:
         exposure_percent = params.get("asa_exposure_percent", 60)
 
         blast = BLAST(self.dirs["data"]["blast"])
-        #selected_templates = blast.run(input_protein, top_n_templates)
-        selected_templates = {"1a8t_A"}
+        selected_templates = blast.run(input_protein, top_n_templates)
+        #selected_templates = {"1a8t_A"}
         print(f"[!] Selected {len(selected_templates)} templates")
 
         subgraphs_all = []

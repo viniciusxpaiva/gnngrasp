@@ -11,6 +11,7 @@ import DataTable from './pages/dataTable';
 import ZeroPredict from './pages/zeroPredict';
 import ReactGA from 'react-ga';
 import usePageTracking from './components/items/PageTracking';
+import About from './pages/about';
 
 // Initialize Google Analytics
 ReactGA.initialize('G-V8KQDT1TXL');
@@ -21,7 +22,8 @@ function App() {
       <PageTrackingWrapper>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='/results/:inputString' element={<Results />} />
+          <Route path='/results/:jobId' element={<Results />} />
+          <Route path='/about' element={<About />} />
           <Route path='/contact' element={<Contact />} />
           <Route path='/help' element={<Help />} />
           <Route path='/notfound' element={<NotFound />} />
