@@ -121,10 +121,11 @@ class Protein:
         """
         Save the protein sequence as a .fasta file for BLAST.
         """
-        fasta_path = os.path.join(out_dir, f"{self.pdb_id}_{self.chain_id}.fasta")
+        chain_label = self.chain_id or "ALL"
+        fasta_path = os.path.join(out_dir, f"{self.pdb_id}_{chain_label}.fasta")
 
         record = SeqRecord(
-            Seq(self.sequence), id=f"{self.pdb_id}_{self.chain_id}", description=""
+            Seq(self.sequence), id=f"{self.pdb_id}_{chain_label}", description=""
         )
         SeqIO.write(record, fasta_path, "fasta")
         self.fasta_files = [fasta_path]
@@ -196,19 +197,24 @@ class Protein:
         Extract the one-letter amino acid sequence from the structure.
         """
         aa_map = {k.upper(): v for k, v in protein_letters_3to1.items()}
-        sequence = ""
+        sequences = []
 
         for model in self.structure:
             for chain in model:
-                if chain.id != self.chain_id and self.chain_id != "":
+                if self.chain_id and chain.id != self.chain_id:
                     continue
+                chain_sequence = []
                 for residue in chain:
                     if residue.id[0] == " ":  # Only standard residues
                         resname = residue.get_resname().strip().upper()
-                        sequence += aa_map.get(resname, "X")
-                return sequence  # Return after the correct chain is processed
+                        chain_sequence.append(aa_map.get(resname, "X"))
+                if chain_sequence:
+                    sequences.append("".join(chain_sequence))
+            # If a specific chain was requested, no need to parse other chains
+            if self.chain_id:
+                break
 
-        return ""
+        return "".join(sequences)
 
     def _extract_single_chain_structure(self, chain):
         """

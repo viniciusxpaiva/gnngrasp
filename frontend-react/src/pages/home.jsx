@@ -212,21 +212,21 @@ const Home = () => {
                                                 onClick={() => handleExampleClick("1a8t")}
                                                 sx={{ color: "white", borderColor: "white", mr: 2 }}
                                             >
-                                                1A8T
+                                                1a8t
                                             </Button>
                                             <Button
                                                 variant="outlined"
-                                                onClick={() => handleExampleClick("1CRN")}
+                                                onClick={() => handleExampleClick("2aai")}
                                                 sx={{ color: "white", borderColor: "white", mr: 2 }}
                                             >
-                                                1CRN
+                                                2aai
                                             </Button>
                                             <Button
                                                 variant="outlined"
-                                                onClick={() => handleExampleClick("1A2B")}
+                                                onClick={() => handleExampleClick("3nos")}
                                                 sx={{ color: "white", borderColor: "white" }}
                                             >
-                                                1A2B
+                                                3nos
                                             </Button>
                                         </Paper>
                                     </div>
@@ -292,22 +292,16 @@ const Home = () => {
 
                 {/* SECTION 2 — Framework Overview */}
                 <div class="row mb">
-                    <div class="col-md-6">
-                        <div class="bordered">
-                            <img src="img/hierarchical.png" class=" img-fluid" alt="Framework design" />
+                    <div class="col-12 text-center">
+                        <h2 style={{ marginBottom: "20px" }}>Hierarchical Graph Framework</h2>
+                        <div class="bordered mb-3" style={{ display: "inline-block" }}>
+                            <img
+                                src="img/hierarchical.png"
+                                class="img-fluid"
+                                alt="Framework design"
+                                style={{ display: "block", margin: "0 auto" }}
+                            />
                         </div>
-                    </div>
-                    <div
-                        class="col-md-6"
-                        style={{
-                            display: "flex",
-                            flexDirection: "column",
-                            justifyContent: "center",
-                        }}
-                    >
-                        <p>
-                            <h2>Hierarchical Graph Framework</h2>
-                        </p>
                         <p>
                             GNN-GRaSP employs a <b>two-stage hierarchical model</b> based on CLARA:
                             (i) a <b>subgraph-level classifier</b> identifies regions likely to
@@ -331,6 +325,21 @@ const Home = () => {
 
                 {/* SECTION 3 — Results and Visualization */}
                 <div class="row mt-1">
+                    <div class="col-md-6">
+                        <div class="bordered">
+                            <img
+                                src="img/visu.png"
+                                className="img-fluid"
+                                style={{
+                                    maxWidth: "100%",
+                                    maxHeight: "500px",
+                                    width: "auto",
+                                    height: "auto",
+                                }}
+                                alt="Visualization of predictions"
+                            />
+                        </div>
+                    </div>
                     <div
                         class="col-md-6"
                         style={{
@@ -357,21 +366,6 @@ const Home = () => {
                             predictions overlap across subgraphs and classifiers, supporting both
                             visual interpretation and comparative analysis.
                         </p>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="bordered">
-                            <img
-                                src="img/visu.png"
-                                className="img-fluid"
-                                style={{
-                                    maxWidth: "100%",
-                                    maxHeight: "500px",
-                                    width: "auto",
-                                    height: "auto",
-                                }}
-                                alt="Visualization of predictions"
-                            />
-                        </div>
                     </div>
                 </div>
             </div>

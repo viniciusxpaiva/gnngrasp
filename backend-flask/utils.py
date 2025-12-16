@@ -6,6 +6,8 @@ import subprocess
 import sys
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
+import numpy as np
+from sklearn.cluster import DBSCAN
 
 BACKEND_PATH = ''
 #BACKEND_PATH = '/var/www/benderdb/backend-flask/'
@@ -62,25 +64,114 @@ def download_pdb_from_rcsb(pdb_code: str, output_dir: Path) -> Path:
 	return dest_path
 
 
-def get_prediction_results(input_file):
+def _get_ca_coordinates(pdb_file):
+	'''
+	Read CA atom coordinates from a PDB file.
+	Returns a mapping {(chain, resname, resnum): np.array([x, y, z])}.
+	'''
+	coords = {}
+	with open(pdb_file, 'r') as handle:
+		for line in handle:
+			if not line.startswith('ATOM'):
+				continue
+			if line[12:16].strip() != 'CA':
+				continue
+			chain = line[21].strip()
+			resname = line[17:20].strip()
+			resnum = line[22:26].strip()
+			try:
+				x = float(line[30:38])
+				y = float(line[38:46])
+				z = float(line[46:54])
+			except ValueError:
+				continue
+			coords[(chain, resname, resnum)] = np.array([x, y, z], dtype=float)
+	return coords
+
+
+def _cluster_predicted_residues(residue_lists, coord_lookup, eps=8.0, min_samples=3):
+	'''
+	Group residues into clusters using DBSCAN on CA coordinates.
+	Returns (clusters, noise) where clusters is a list of clustered residues
+	and noise aggregates all DBSCAN -1 residues plus residues without coordinates.
+	'''
+	if not residue_lists:
+		return [], []
+
+	coords = []
+	res_with_coords = []
+	noise = []
+
+	for res in residue_lists:
+		key = (res[0], res[1], res[2])
+		coord = coord_lookup.get(key)
+		if coord is None:
+			noise.append(res)
+		else:
+			res_with_coords.append(res)
+			coords.append(coord)
+
+	if not coords:
+		return [], residue_lists
+
+	dbscan = DBSCAN(eps=eps, min_samples=min_samples)
+	labels = dbscan.fit_predict(np.stack(coords))
+
+	clusters = {}
+	for res, label in zip(res_with_coords, labels):
+		if label == -1:
+			noise.append(res)
+		else:
+			clusters.setdefault(label, []).append(res)
+
+	# Order clusters by label for determinism
+	clustered = [clusters[label] for label in sorted(clusters.keys())]
+
+	return clustered, noise
+
+
+def get_prediction_results(input_file, pdb_file=None, eps=8.0, min_samples=3):
 	df = pd.read_csv(input_file)
 
 	# filtra apenas as linhas com predicted_label = 1
 	df_filtered = df[df["predicted_label"] == 1]
 
 	# transforma o residue_id no formato desejado
-	# exemplo: "TRP_32_A" → ['A', 'TRP', '32']
-	def split_residue(residue_id):
+	# exemplo: "TRP_32_A" → ['A', 'TRP', '32', binding_score]
+	def split_residue(residue_id, score):
 		resname, resnum, chain = residue_id.split("_")
-		return [chain, resname, resnum]
+		return [chain, resname, resnum, float(score)]
 
-	# aplica a função
-	residue_lists = [split_residue(rid) for rid in df_filtered["residue_id"]]
+	# aplica a função incluindo o binding_score
+	residue_lists = [
+		split_residue(rid, score)
+		for rid, score in zip(df_filtered["residue_id"], df_filtered["binding_score"])
+	]
 
 	# coloca dentro de uma lista externa
 	result = [residue_lists]
 
-	return result
+	# Apply clustering when coordinates are available
+	pdb_path = Path(pdb_file) if pdb_file else None
+	if pdb_path is None:
+		pdb_candidates = list(Path(input_file).parent.glob("*.pdb"))
+		if pdb_candidates:
+			pdb_path = pdb_candidates[0]
+
+	clustered = []
+	noise = []
+	if pdb_path and pdb_path.exists():
+		coord_lookup = _get_ca_coordinates(pdb_path)
+		clustered, noise = _cluster_predicted_residues(residue_lists, coord_lookup, eps=eps, min_samples=min_samples)
+
+	# Se não foi possível clusterizar, devolve tudo como um cluster único
+	if not clustered and not noise:
+		return [{"label": 0, "residues": residue_lists, "is_noise": False}] if residue_lists else []
+
+	clusters_out = [{"label": idx, "residues": cluster, "is_noise": False} for idx, cluster in enumerate(clustered)]
+	if noise:
+		clusters_out.append({"label": "non_cluster", "residues": noise, "is_noise": True})
+	return clusters_out
 
 
 def run_deep_grasp(pdb_code: str, output_dir: Path, extra_args=None, timeout_sec=1800):

@@ -149,7 +149,7 @@ class NodePropertiesExtractor:
 
                 res_name = residue.get_resname()
                 res_num = residue.get_id()[1]
-                residue_id = f"{res_name}_{res_num}_{self.protein.chain_id}"
+                residue_id = f"{res_name}_{res_num}_{chain.id}"
                 # Initialize interaction counts
                 interactions = {
                     "aromatic_bond": 0,

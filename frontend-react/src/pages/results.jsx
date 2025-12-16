@@ -105,7 +105,17 @@ const Results = () => {
           setPdbCode((data.pdb_code || "").toUpperCase());
           return;
         }
-        if (!data.prot_folder || data.prot_folder.length === 0){
+        const noSites =
+          !data.grasp ||
+          data.grasp.length === 0 ||
+          data.grasp.every((site) => {
+            const residues = Array.isArray(site)
+              ? site
+              : site?.residues || [];
+            return residues.length === 0;
+          });
+
+        if (!data.prot_folder || data.prot_folder.length === 0 || noSites){
           navigate(`/notfound`);
           return;
         }
@@ -166,19 +176,29 @@ const Results = () => {
         }
 
         if (data.status === "RUNNING") {
-          if (!isCancelled) {
-            setIsRunning(true);
-          }
-          return;
-        }
+              if (!isCancelled) {
+                setIsRunning(true);
+              }
+              return;
+            }
 
-        if (data.status === "DONE" && !isCancelled) {
-          if (!data.prot_folder) {
-            navigate(`/notfound`);
-            return;
-          }
-          setGraspSites(data.grasp);
-          setPdbFolder(data.job_id);
+            if (data.status === "DONE" && !isCancelled) {
+              const noSites =
+                !data.grasp ||
+                data.grasp.length === 0 ||
+                data.grasp.every((site) => {
+                  const residues = Array.isArray(site)
+                    ? site
+                    : site?.residues || [];
+                  return residues.length === 0;
+                });
+
+              if (!data.prot_folder || noSites) {
+                navigate(`/notfound`);
+                return;
+              }
+              setGraspSites(data.grasp);
+              setPdbFolder(data.job_id);
           setProteinFullName(data.prot_full_name || "");
           setPdbCode((data.pdb_code || "").toUpperCase());
           setIsRunning(false);
@@ -243,8 +263,11 @@ const Results = () => {
                 }}
                 open={true}
               >
-                <div>
-                  GNN-GRaSP is running. Results will show automatically once finished.
+                <div style={{ textAlign: "center", lineHeight: 1.4 }}>
+                  <div>GNN-GRaSP is running. Results will show automatically once finished.</div>
+                  <div style={{marginTop: "4px" }}>
+                    Predictions may take up to 1 minute.
+                  </div>
                 </div>
                 <CircularProgress color="inherit" />
                 {jobLink && (

@@ -23,11 +23,16 @@ const bSiteColors = [
 export default function MolViewerPopup(props) {
   const [stagePopup, setStagePopup] = useState(null);
   const [tabIndex, setTabIndex] = useState(0);
+  const asResidues = (cluster) =>
+    Array.isArray(cluster) ? cluster : cluster?.residues || [];
 
   function changeColorBindSitesPopup(component, BindSites, color) {
     // Generate strings for each list inside bindSites
     const transformedArray = BindSites.map((item) => {
-      const parts = item.split("-");
+      if (Array.isArray(item)) {
+        return `${item[2]}:${item[0]}`;
+      }
+      const parts = String(item).split("-");
       return `${parts[1]}:${parts[2]}`;
     });
 
@@ -44,7 +49,11 @@ export default function MolViewerPopup(props) {
 
   function colorAllSites(component) {
     if (props.predsToShow.includes("GRaSP"))
-      changeColorBindSitesPopup(component, props.graspSites[0], bSiteColors[0]);
+      changeColorBindSitesPopup(
+        component,
+        asResidues(props.graspSites?.[0] || []),
+        bSiteColors[0]
+      );
     if (props.predsToShow.includes("PUResNet"))
       changeColorBindSitesPopup(component, props.puresnetSites[0], bSiteColors[1]);
     if (props.predsToShow.includes("DeepPocket"))

@@ -44,6 +44,9 @@ const bSiteColors = [
   "#836394",
 ];
 
+const asResidues = (cluster) =>
+  Array.isArray(cluster) ? cluster : cluster?.residues || [];
+
 const NoMaxWidthTooltip = styled(({ className, ...props }) => (
   <Tooltip {...props} classes={{ popper: className }} arrow />
 ))({
@@ -107,8 +110,9 @@ export default function NGLViewer(props) {
     return stringArray;
   }
 
-  function generateBindSiteStringPredictors(bindSiteList) {
-    const stringArray = bindSiteList
+  function generateBindSiteStringPredictors(cluster) {
+    const residues = Array.isArray(cluster) ? cluster : cluster?.residues || [];
+    const stringArray = residues
       .map((item) => `${item[2]}:${item[0]}`)
       .join(" or ");
     return stringArray;
@@ -140,7 +144,10 @@ export default function NGLViewer(props) {
   function changeColorBindSitesPopup(component, BindSites, color) {
     // Generate strings for each list inside bindSites
     const transformedArray = BindSites.map((item) => {
-      const parts = item.split("-");
+      if (Array.isArray(item)) {
+        return `${item[2]}:${item[0]}`;
+      }
+      const parts = String(item).split("-");
       return `${parts[1]}:${parts[2]}`;
     });
 
@@ -157,7 +164,11 @@ export default function NGLViewer(props) {
 
   function colorAllSitesPopup(component) {
     if (props.predsToShow.includes("GRaSP") && props.graspButton === "selected")
-      changeColorBindSitesPopup(component, props.graspSites[0], bSiteColors[0]);
+      changeColorBindSitesPopup(
+        component,
+        asResidues(props.graspSites?.[0] || []),
+        bSiteColors[0]
+      );
     if (
       props.predsToShow.includes("PUResNet") &&
       props.puresnetButton === "selected"
@@ -250,7 +261,7 @@ export default function NGLViewer(props) {
                   color={props.bSiteColors[i % props.bSiteColors.length]}
                   hoverColor="grey"
                 >
-                  Cluster {i}
+                  {site.is_noise ? "Non Cluster" : `Cluster ${site.label}`}
                 </ColorfulText>
               }
               {...a11yProps(i)}
@@ -413,17 +424,6 @@ export default function NGLViewer(props) {
             <Typography gutterBottom variant="h5" component="div">
               Molecular visualization
             </Typography>
-            <NoMaxWidthTooltip title="Download PyMol session">
-              <Button
-                size="small"
-                aria-label="download"
-                onClick={() => handleDownloadPymol(props.pdb)}
-                variant="outlined"
-                startIcon={<DownloadingIcon />}
-              >
-                PyMol
-              </Button>
-            </NoMaxWidthTooltip>
 
           </Stack>
           <Typography color="text.secondary" variant="body2">

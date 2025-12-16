@@ -89,7 +89,7 @@ class HierPrediction:
 
         # 3) Split
         split_by = params.get("protein_split_by", "template").lower()
-        val_ratio = float(params.get("val_ratio", 0.30))
+        val_ratio = float(params.get("val_ratio", 0.00))
         train_set, val_set, test_set = self._split_subgraphs(
             split_by=split_by, val_ratio=val_ratio, subgraphs_all=subgraphs_all
         )
@@ -115,7 +115,7 @@ class HierPrediction:
             + (f" | test={len(test_set)}" if test_set else "")
         )
 
-    def prepare_hierarchical_graph_dataset(self, input_protein):
+    def prepare_hierarchical_graph_dataset23132(self, input_protein):
         """
         Prepare a dataset for hierarchical prediction using a fixed number of subgraphs
         per template protein. Subgraphs are selected randomly or based on heuristics
@@ -135,9 +135,9 @@ class HierPrediction:
 
         # Run BLAST to find similar templates
         blast = BLAST(self.dirs["data"]["blast"])
-        #selected_templates = blast.run(input_protein, top_n_templates)
+        selected_templates = blast.run(input_protein, top_n_templates)
 
-        selected_templates = {"1a8t_A"}
+        #selected_templates = {"1a8t_A"}
 
         print(f"[!] Selected {len(selected_templates)} templates")
         subgraphs = []
@@ -1676,6 +1676,8 @@ class HierPrediction:
             f"{template_id}_neighbors.csv.zip",
         )
 
+        print(neighbors_path)
+
         if not (
             os.path.exists(node_embd_path)
             and os.path.exists(neighbors_path)
@@ -1729,6 +1731,8 @@ class HierPrediction:
             self.dirs["data"]["ego_templates"],
             f"{template_id}_neighbors.csv.zip",
         )
+
+        print(neighbors_path)
 
         if not (os.path.exists(node_embd_path) and os.path.exists(neighbors_path)):
             print(f"[WARNING] Missing files for {template_id}")

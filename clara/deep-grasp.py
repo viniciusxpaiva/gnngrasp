@@ -78,7 +78,7 @@ if __name__ == "__main__":
             "num_heads": 4,
             "dropout": 0.2,
             "lr": 1e-4,
-            "epochs": 150,
+            "epochs": 150, #150
             "weight_decay": 1e-5,
             "prediction_threshold": 0.5,
             "metric_mode": "f_beta",
@@ -92,7 +92,7 @@ if __name__ == "__main__":
             "num_heads": 4,
             "dropout": 0.2,
             "lr": 1e-4,
-            "epochs": 60,
+            "epochs": 60, #60
             "weight_decay": 1e-5,
             "batch_size": 32,
             "fusion_mode": "none",  # concat | film | none

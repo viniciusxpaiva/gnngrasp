@@ -8,6 +8,7 @@ from app.utils.build_subgraphs_from_neighbors import (
     build_input_subgraphs_from_neighbors,
 )
 from app.utils.prediction_utils import cleanup_cuda
+from app.utils.embedding_utils import extract_residue_ids
 
 from app.protein import Protein
 
@@ -54,8 +55,9 @@ class Pipeline:
 
         # Step 1: Load and validate the input protein structure
         print("[!] Preparing input protein data")
-        input_protein = Protein(prot_id, input_prot_path, "A")
-        #self._prepare_output_dir(prot_id, "A")
+        chain_id = params.get("chain_id", "")
+        input_protein = Protein(prot_id, input_prot_path, chain_id)
+        #self._prepare_output_dir(prot_id, chain_id)
         input_protein.save_fasta(self.dirs["output"]["prot_out_dir"])
 
         if not input_protein.is_valid:
@@ -89,11 +91,11 @@ class Pipeline:
 
         if params["use_subgraph_classifier"]:
             self.prediction_pipeline.initialize_subgraph_classifier()
-            self.prediction_pipeline.train_subgraph_classifier()
+            self.prediction_pipeline.train_subgraph_classifier_old()
             
 
         self.prediction_pipeline.initialize_node_classifier()
-        self.prediction_pipeline.train_node_classifier()
+        self.prediction_pipeline.train_node_classifier_old()
 
         residue_scores = self.prediction_pipeline.predict_binding_sites(input_subgraphs)
 
@@ -101,7 +103,7 @@ class Pipeline:
         
         print("Salvando predições")
         self._save_binding_site_predictions(
-            residue_scores, prot_id, "A", all_residues
+            residue_scores, prot_id, chain_id, all_residues
         )
 
     #############################################################
@@ -145,10 +147,10 @@ class Pipeline:
                 # "pdbs": "/storage/hpc/11/dealmei1/content-deep-grasp/pdbs",
                 "esm_templates": {
                     "base": os.path.join(self.base_dir, "data", "esm_templates"),
-                    "node_embeddings": os.path.join(
-                        self.base_dir, "data", "esm_templates", "node_embeddings"
-                    ),
-                    # "node_embeddings": "/home/vinicius/content-deep-bender/esm_templates/node_embeddings",
+                    #"node_embeddings": os.path.join(
+                    #    self.base_dir, "data", "esm_templates", "node_embeddings"
+                    #),
+                    "node_embeddings": "/home/vinicius/content-deep-bender/esm_templates/node_embeddings",
                     # "node_embeddings": "/storage/hpc/11/dealmei1/content-deep-grasp/esm_templates/node_embeddings",
                     "edge_embeddings": os.path.join(
                         self.base_dir, "data", "esm_templates", "edge_embeddings"
@@ -165,14 +167,14 @@ class Pipeline:
                 },
                 "prop_templates": {
                     "base": os.path.join(self.base_dir, "data", "prop_templates"),
-                    "node_properties": os.path.join(
-                        self.base_dir, "data", "prop_templates", "node_properties"
-                    ),
-                    # "node_properties": "/home/vinicius/content-deep-bender/prop_templates/node_properties",
-                    "edge_properties": os.path.join(
-                        self.base_dir, "data", "prop_templates", "edge_properties"
-                    ),
-                    # "edge_properties": "/home/vinicius/content-deep-bender/prop_templates/edge_properties",
+                    #"node_properties": os.path.join(
+                    #    self.base_dir, "data", "prop_templates", "node_properties"
+                    #),
+                    "node_properties": "/home/vinicius/content-deep-bender/prop_templates/node_properties",
+                    #"edge_properties": os.path.join(
+                    #    self.base_dir, "data", "prop_templates", "edge_properties"
+                    #),
+                    "edge_properties": "/home/vinicius/content-deep-bender/prop_templates/edge_properties",
                     # "edge_properties": "/storage/hpc/11/dealmei1/content-deep-grasp/prop_templates/edge_properties",
                     "global_embeddings": os.path.join(
                         self.base_dir, "data", "prop_templates", "global_embeddings"
@@ -307,11 +309,29 @@ class Pipeline:
         """
         # Generate embeddings
 
-        input_csv_file = f"{self.dirs["data"]["esm_templates"]["node_embeddings"]}/{protein.pdb_id}_node_embeddings.csv"
+        input_csv_file = (
+            f"{self.dirs['data']['esm_templates']['node_embeddings']}/{protein.pdb_id}_node_embeddings.csv"
+        )
+        expected_residues = extract_residue_ids(protein)
+        needs_refresh = True
+
         if os.path.exists(input_csv_file):
-            protein.node_embeddings = pd.read_csv(input_csv_file)
-            print("[✓] Using existing CSV file for input protein node embeddings")
-        else:
+            existing_df = pd.read_csv(input_csv_file)
+            existing_ids = existing_df["residue_id"].astype(str).tolist()
+            if (
+                len(existing_ids) == len(expected_residues)
+                and set(existing_ids) == set(expected_residues)
+            ):
+                needs_refresh = False
+                protein.node_embeddings = existing_df
+                print("[✓] Using existing CSV file for input protein node embeddings")
+            else:
+                print(
+                    "[!] Recomputing node embeddings to include all chains "
+                    f"({len(expected_residues)} residues vs {len(existing_ids)} cached)"
+                )
+
+        if needs_refresh:
             print("[✓] Extracting node embeddings for input protein")
             from app.embeddings.esm_node_embeddings_generator import (
                 ESMNodeEmbeddingsGenerator,
@@ -354,12 +374,26 @@ class Pipeline:
             save_csv (bool): If True, save the extracted properties to CSV.
         """
 
-        input_csv_file = f"{self.dirs["data"]["prop_templates"]["node_properties"]}/{protein.pdb_id}_node_properties.csv"
-        if os.path.exists(input_csv_file):
-            protein.node_properties = pd.read_csv(input_csv_file)
-            print("[✓] Using existing CSV file for input protein node properties ")
+        input_csv_file = (
+            f"{self.dirs['data']['prop_templates']['node_properties']}/{protein.pdb_id}_node_properties.csv"
+        )
+        expected_residues = set(extract_residue_ids(protein))
+        needs_refresh = True
 
-        else:
+        if os.path.exists(input_csv_file):
+            existing_df = pd.read_csv(input_csv_file)
+            existing_ids = set(existing_df["residue_id"].astype(str))
+            if existing_ids == expected_residues:
+                needs_refresh = False
+                protein.node_properties = existing_df
+                print("[✓] Using existing CSV file for input protein node properties ")
+            else:
+                print(
+                    "[!] Recomputing node properties to include all chains "
+                    f"({len(expected_residues)} residues vs {len(existing_ids)} cached)"
+                )
+
+        if needs_refresh:
             print("[✓] Extracting node properties for input protein")
             # Initialize extractor
             from app.properties.node_properties_extractor import NodePropertiesExtractor
@@ -408,12 +442,28 @@ class Pipeline:
             protein (Protein): The input protein object to process.
         """
 
-        input_csv_file = f"{self.dirs["data"]["prop_templates"]["edge_properties"]}/{protein.pdb_id}_edge_properties.csv"
-        if os.path.exists(input_csv_file):
-            protein.edge_properties = pd.read_csv(input_csv_file)
-            print("[✓] Using existing CSV file for input protein edge properties ")
+        input_csv_file = (
+            f"{self.dirs['data']['prop_templates']['edge_properties']}/{protein.pdb_id}_edge_properties.csv"
+        )
+        expected_residues = set(extract_residue_ids(protein))
+        needs_refresh = True
 
-        else:
+        if os.path.exists(input_csv_file):
+            existing_df = pd.read_csv(input_csv_file)
+            edge_nodes = set(existing_df["source"]).union(set(existing_df["target"]))
+            expected_chains = {rid.split("_")[-1] for rid in expected_residues}
+            cached_chains = {rid.split("_")[-1] for rid in edge_nodes}
+            if expected_chains.issubset(cached_chains):
+                needs_refresh = False
+                protein.edge_properties = existing_df
+                print("[✓] Using existing CSV file for input protein edge properties ")
+            else:
+                print(
+                    "[!] Recomputing edge properties to include all chains "
+                    f"(cached chains: {sorted(cached_chains)}, expected: {sorted(expected_chains)})"
+                )
+
+        if needs_refresh:
             print("[✓] Extracting edge features for input protein")
             from app.properties.edge_properties_extractor import EdgePropertiesExtractor
 
@@ -456,12 +506,13 @@ class Pipeline:
             ]
         )
 
+        predictions_df["chain_id"] = predictions_df["residue_id"].str.split("_").str[-1]
         predictions_df["residue_number"] = (
             predictions_df["residue_id"].str.extract(r"_([0-9]+)_").astype(int)
         )
-        predictions_df = predictions_df.sort_values(by="residue_number").drop(
-            columns="residue_number"
-        )
+        predictions_df = predictions_df.sort_values(
+            by=["chain_id", "residue_number"]
+        ).drop(columns=["chain_id", "residue_number"])
 
         # === Step 2: Save ===
         output_path = self._save_prediction_to_csv(predictions_df, prot_id, chain_id)

@@ -28,8 +28,9 @@ export default function MolViewerPredictors(props) {
   const [tabIndex, setTabIndex] = useState(0);
   const [stagePredictors, setStagePredictors] = useState("");
 
-  function generateBindSiteStringPredictors(bindSiteList) {
-    const stringArray = bindSiteList
+  function generateBindSiteStringPredictors(cluster) {
+    const residues = Array.isArray(cluster) ? cluster : cluster?.residues || [];
+    const stringArray = residues
       .map((item) => `${item[2]}:${item[0]}`)
       .join(" or ");
     return stringArray;

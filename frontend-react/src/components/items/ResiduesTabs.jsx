@@ -36,9 +36,13 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
     backgroundColor: "grey",
     color: theme.palette.common.white,
     height: 50,
+    padding: "6px 8px",
+    whiteSpace: "nowrap",
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 15,
+    padding: "6px 8px",
+    whiteSpace: "nowrap",
   },
 }));
 
@@ -55,6 +59,16 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function ResiduesTabs(props) {
 
   const [previousFocusRes, setPreviousFocusRes] = useState("");
+
+  const getConfidenceColor = (score) => {
+    // score esperado em [0,1]; faz clamp para evitar valores fora da faixa
+    const v = Math.max(0, Math.min(1, score || 0));
+    // interpola de vermelho (#e53935) para verde (#43a047)
+    const r = Math.round(0xe5 + (0x43 - 0xe5) * v);
+    const g = Math.round(0x39 + (0xa0 - 0x39) * v);
+    const b = Math.round(0x35 + (0x47 - 0x35) * v);
+    return `rgb(${r}, ${g}, ${b})`;
+  };
 
   function ContentTabs() {
     if (props.type === "predictors") {
@@ -283,10 +297,8 @@ export default function ResiduesTabs(props) {
         <Divider />
         <Box sx={{ p: 0 }}>
           <Box sx={{ width: "100%" }}>
-            {props.bindSites.sort(
-              (a, b) => parseInt(a.number) - parseInt(b.number)
-            ).map((p, i) => (
-              <CustomTabPanel value={props.tabIndex} index={i}>
+            {props.bindSites.map((cluster, i) => (
+              <CustomTabPanel value={props.tabIndex} index={i} key={`cluster-${i}`}>
                 <TableContainer component={Paper} sx={{ height: 676 }}>
                   <Table
                     stickyHeader
@@ -300,14 +312,18 @@ export default function ResiduesTabs(props) {
                         </StyledTableCell>
                         <StyledTableCell align="center">Number</StyledTableCell>
                         <StyledTableCell align="center">Chain</StyledTableCell>
+                        <StyledTableCell align="center">Confidence</StyledTableCell>
                         <StyledTableCell align="center">
                           Look at
                         </StyledTableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {p.map((res, j) => (
-                        <StyledTableRow key={i}>
+                      {cluster.residues
+                        .slice()
+                        .sort((a, b) => parseInt(a[2]) - parseInt(b[2]))
+                        .map((res, j) => (
+                        <StyledTableRow key={`${i}-${j}`}>
                           <StyledTableCell align="center">
                             {res[1]}
                           </StyledTableCell>
@@ -316,6 +332,12 @@ export default function ResiduesTabs(props) {
                           </StyledTableCell>
                           <StyledTableCell align="center">
                             {res[0]}
+                          </StyledTableCell>
+                          <StyledTableCell
+                            align="center"
+                            sx={{ color: getConfidenceColor(res[3]), fontWeight: 700 }}
+                          >
+                            {`${Math.round((res[3] || 0) * 100)}%`}
                           </StyledTableCell>
                           <StyledTableCell align="center">
                             <NoMaxWidthTooltip title="Focus on this residue">

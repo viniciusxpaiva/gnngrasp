@@ -73,8 +73,9 @@ def process_string():
 
             protein_residues = get_all_protein_residues(pdb_stem_original, job_dir)
             prot_full_name = pdb_stem_original
-            bsites_grasp = get_prediction_results(existing_csv)
-            bsites_grasp = [[['A', 'GLU', '28'], ['A', 'ILE', '29'], ['A', 'GLU', '30'], ['A', 'GLY', '31'], ['A', 'TRP', '32'], ['A', 'GLY', '33'], ['A', 'MET', '34'], ['A', 'VAL', '35'], ['A', 'HIS', '82'], ['A', 'TRP', '83'], ['A', 'HIS', '84'], ['A', 'ASP', '86'], ['A', 'HIS', '145'], ['A', 'CYS', '164'], ['A', 'ASP', '168'], ['A', 'GLY', '175'], ['A', 'ASN', '176'], ['A', 'ILE', '177'], ['A', 'GLY', '205'], ['A', 'HIS', '206'], ['A', 'GLY', '207']], [['A', 'THR', '229']]]
+            bsites_grasp = get_prediction_results(existing_csv, existing_pdb)
+
+            print(bsites_grasp)
 
             return jsonify({
                 'status': 'DONE',

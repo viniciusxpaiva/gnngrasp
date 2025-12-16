@@ -87,7 +87,7 @@ const About = () => {
                     CLARA: A Hierarchical Framework for Imbalanced Graph Learning
                   </Typography>
 
-                  <Typography color="text.secondary" variant="body1" paragraph>
+                  <Typography color="text.secondary" variant="body1" paragraph sx={{ textAlign: "justify" }}>
                     GNN-GRaSP is built upon <strong>CLARA</strong> (Coarse-to-fine 
                     Localized Adaptive Region Attention), a general framework designed to 
                     address <em>class imbalance in graph-structured data</em>. Many graph 
@@ -98,12 +98,12 @@ const About = () => {
                     fail when positive instances form small, meaningful clusters.
                   </Typography>
 
-                  <Typography color="text.secondary" variant="body1" paragraph>
+                  <Typography color="text.secondary" variant="body1" paragraph sx={{ textAlign: "justify" }}>
                     CLARA tackles this by breaking node classification into two coordinated 
                     stages. First, a <strong>subgraph-level classifier</strong> identifies 
                     regions of the graph likely to contain positive instances, filtering out 
                     irrelevant areas dominated by the majority class. Then, a 
-                    <strong>fine-grained node classifier</strong> operates only on those 
+                    <strong> fine-grained node classifier</strong> operates only on those 
                     selected regions. Both stages are implemented using Graph Attention 
                     Networks (GATs), allowing the model to emphasize informative neighbors 
                     during message passing. This hierarchical approach improves sensitivity 
@@ -117,22 +117,22 @@ const About = () => {
                     Graph Modeling for Protein Structures
                   </Typography>
 
-                  <Typography color="text.secondary" variant="body1" paragraph>
+                  <Typography color="text.secondary" variant="body1" paragraph sx={{ textAlign: "justify" }}>
                     In our application, proteins are represented as <strong>residue-level 
                     graphs</strong>, where nodes correspond to amino acids and edges encode 
                     spatial or interaction-based relationships such as hydrogen bonds, 
                     hydrophobic contacts, and aromatic interactions. Instead of hand-crafted 
                     biochemical descriptors, each node is characterized by 
-                    <strong>ESM-2 embeddings</strong>, a powerful representation learned by a 
+                    <strong> ESM-2 embeddings</strong>, a powerful representation learned by a 
                     large protein language model that captures evolutionary and structural 
                     information directly from amino acid sequences.
                   </Typography>
 
-                  <Typography color="text.secondary" variant="body1" paragraph>
+                  <Typography color="text.secondary" variant="body1" paragraph sx={{ textAlign: "justify" }}>
                     A crucial step in CLARA is the decomposition of proteins into localized 
-                    <strong>subgraphs</strong>. GNN-GRaSP supports both randomized coverage 
+                    <strong> subgraphs</strong>. GNN-GRaSP supports both randomized coverage 
                     strategies and domain-informed heuristics. Of particular relevance is the 
-                    <strong>SASA-based heuristic</strong>, where residues with high 
+                    <strong> SASA-based heuristic</strong>, where residues with high 
                     solvent-accessible surface area are chosen as subgraph seeds. Because 
                     ligand-binding residues almost always occur on the protein surface, this 
                     heuristic significantly improves the model’s focus on functionally 
@@ -145,9 +145,9 @@ const About = () => {
                     GNN-GRaSP: Applying CLARA to Binding Site Prediction
                   </Typography>
 
-                  <Typography color="text.secondary" variant="body1" paragraph>
+                  <Typography color="text.secondary" variant="body1" paragraph sx={{ textAlign: "justify" }}>
                     GNN-GRaSP represents a specialized adaptation of CLARA for 
-                    <strong>protein–ligand binding site prediction</strong>. Binding residues 
+                    <strong> protein–ligand binding site prediction</strong>. Binding residues 
                     form small, highly localized clusters on the protein surface, making this 
                     task inherently imbalanced. By first identifying subgraphs likely to 
                     contain binding residues and then refining predictions within those 
@@ -155,11 +155,11 @@ const About = () => {
                     residues more effectively than whole-protein models.
                   </Typography>
 
-                  <Typography color="text.secondary" variant="body1" paragraph>
+                  <Typography color="text.secondary" variant="body1" paragraph sx={{ textAlign: "justify" }}>
                     When evaluated on the COACH100 benchmark, our hierarchical variant 
                     leveraging SASA-based subgraph generation achieved a 
-                    <strong>Matthews Correlation Coefficient of 0.674</strong> and an 
-                    <strong>F1-score of 68.6%</strong>, surpassing state-of-the-art binding 
+                    <strong> Matthews Correlation Coefficient of 0.674</strong> and an 
+                    <strong> F1-score of 68.6%</strong>, surpassing state-of-the-art binding 
                     site predictors such as PUResNet v2.0 and GRaSP, as well as specialized 
                     graph-imbalance solutions like NodeImport, GraphSHA, and BAT. These 
                     results highlight the advantages of modeling binding sites as clustered 
@@ -167,7 +167,7 @@ const About = () => {
                     incorporating domain-specific heuristics into graph-based learning.
                   </Typography>
 
-                  <Typography color="text.secondary" variant="body1" paragraph>
+                  <Typography color="text.secondary" variant="body1" paragraph sx={{ textAlign: "justify" }}>
                     Overall, GNN-GRaSP combines CLARA’s hierarchical architecture with rich 
                     protein representations and biologically guided subgraph generation, 
                     offering a powerful and extensible framework for studying ligand-binding 
